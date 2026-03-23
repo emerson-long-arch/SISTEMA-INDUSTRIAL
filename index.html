@@ -18,14 +18,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .resumo-card{flex:1;min-width:100px;background:#fff;border-radius:12px;padding:14px;border:1px solid #e0ded6;text-align:center}
 .resumo-card .num{font-size:24px;font-weight:600;color:#1a1a18}
 .resumo-card .label{font-size:11px;color:#888780;margin-top:2px}
+.resumo-card.alerta{background:#FAECE7;border-color:#F0997B}
+.resumo-card.alerta .num{color:#993C1D}
+.resumo-card.alerta .label{color:#993C1D}
+.alerta-banner{background:#FAECE7;border:1px solid #F0997B;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px}
+.alerta-banner .icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.alerta-banner .texto{flex:1}
+.alerta-banner .titulo{font-size:13px;font-weight:600;color:#993C1D;margin-bottom:4px}
+.alerta-banner .item{font-size:12px;color:#712B13;margin-bottom:2px}
 .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .tab{padding:8px 18px;border-radius:20px;border:1px solid #d3d1c7;background:transparent;color:#5f5e5a;font-size:13px;cursor:pointer;transition:all .2s}
 .tab.ativo{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.tab.tem-alerta{border-color:#993C1D;color:#993C1D}
+.tab.tem-alerta.ativo{background:#993C1D;border-color:#993C1D;color:#fff}
 .aba{display:none}
 .aba.ativo{display:block}
-.card{background:#fff;border:1px solid #e0ded6;border-radius:12px;padding:14px;margin-bottom:10px;transition:opacity .2s}
+.card{background:#fff;border:1px solid #e0ded6;border-radius:12px;padding:14px;margin-bottom:10px;transition:all .2s}
 .card.feito{opacity:.45}
+.card.atrasado{background:#FAECE7;border-color:#F0997B;border-left:4px solid #E24B4A}
 .badge{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:500;display:inline-block}
+.badge-atrasado{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:600;display:inline-block;background:#E24B4A;color:#fff;animation:pulsar 2s ease-in-out infinite}
+@keyframes pulsar{0%,100%{opacity:1}50%{opacity:.7}}
 .btn{padding:7px 16px;border-radius:8px;border:1px solid #d3d1c7;background:transparent;color:#5f5e5a;font-size:12px;cursor:pointer;transition:all .2s}
 .btn:hover{background:#f4f4f0}
 .btn-primary{background:#1a1a18;color:#fff;border-color:#1a1a18;font-weight:500}
@@ -36,6 +49,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .inp:focus{border-color:#888}
 .avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
 .emoji-icon{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:#f4f4f0;border:1px solid #e0ded6}
+.emoji-icon.atrasado{background:#FAECE7;border-color:#F0997B}
 .cat-label{font-size:11px;font-weight:600;color:#888780;margin-bottom:8px;margin-top:4px;letter-spacing:.5px}
 .grid2{display:flex;gap:8px;flex-wrap:wrap}
 .grid2>*{flex:1;min-width:140px}
@@ -65,12 +79,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="container">
 
   <div id="salvo-tag" class="salvo-tag" style="display:none">✅ Dados salvos automaticamente</div>
+  <div id="alerta-banner" style="display:none"></div>
 
   <div class="resumo-cards">
     <div class="resumo-card">
       <div class="num" id="r-total">0/0</div>
       <div class="label">Tarefas hoje</div>
       <div class="barra-prog"><div class="barra-inner" id="r-barra" style="width:0%"></div></div>
+    </div>
+    <div class="resumo-card" id="card-alerta">
+      <div class="num" id="r-alerta">0</div>
+      <div class="label">🚨 Em atraso</div>
     </div>
     <div class="resumo-card">
       <div class="num" id="r-func" style="color:#3B6D11">0</div>
@@ -83,14 +102,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 
   <div class="tabs">
-    <button class="tab ativo" onclick="mudarAba('checklist',this)">✅ Checklist</button>
-    <button class="tab" onclick="mudarAba('materiais',this)">📦 Materiais</button>
-    <button class="tab" onclick="mudarAba('funcionarios',this)">👷 Funcionários</button>
+    <button class="tab ativo" id="tab-checklist" onclick="mudarAba('checklist',this)">✅ Checklist</button>
+    <button class="tab" id="tab-materiais" onclick="mudarAba('materiais',this)">📦 Materiais</button>
+    <button class="tab" id="tab-funcionarios" onclick="mudarAba('funcionarios',this)">👷 Funcionários</button>
   </div>
 
   <div id="aba-checklist" class="aba ativo">
     <div class="filtros">
       <button class="btn btn-primary" id="f-todos" onclick="filtrar('todos')">Todos</button>
+      <button class="btn" id="f-atrasado" onclick="filtrar('atrasado')" style="border-color:#993C1D;color:#993C1D">🚨 Atrasados</button>
       <button class="btn" id="f-pendente" onclick="filtrar('pendente')">Pendentes</button>
       <button class="btn" id="f-concluido" onclick="filtrar('concluido')">Concluídos</button>
     </div>
@@ -171,23 +191,23 @@ const CI={Máquinas:['⚙️','🔩','🛠️','🔄','⛽'],Ferramentas:['🔧'
 const AC=['#CECBF6','#9FE1CB','#F5C4B3','#FAC775','#B5D4F4','#C0DD97','#F4C0D1'];
 const AT=['#3C3489','#085041','#712B13','#854F0B','#0C447C','#27500A','#72243E'];
 
-const DEFAULTS = {
+const DEFAULTS={
   funcs:[
-    {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
-    {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
-    {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
-    {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
-    {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
+    {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo',diasSemFechar:2},
+    {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo',diasSemFechar:0},
+    {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo',diasSemFechar:0},
+    {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo',diasSemFechar:0},
+    {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo',diasSemFechar:0},
   ],
   itens:[
-    {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1},
-    {id:2,nome:'Checar nível de betume no tanque',cat:'Usina',prior:'alta',feito:false,respId:2,ii:0},
-    {id:3,nome:'Inspecionar correia transportadora',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4},
-    {id:4,nome:'Verificar óleo do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:0},
-    {id:5,nome:'Conferir ferramentas do turno',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0},
-    {id:6,nome:'Checar extintores e EPIs',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4},
-    {id:7,nome:'Verificar saídas de emergência',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2},
-    {id:8,nome:'Limpeza da área operacional',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0},
+    {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1,diasAtraso:0},
+    {id:2,nome:'Checar nível de betume no tanque',cat:'Usina',prior:'alta',feito:false,respId:2,ii:0,diasAtraso:2},
+    {id:3,nome:'Inspecionar correia transportadora',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4,diasAtraso:1},
+    {id:4,nome:'Verificar óleo do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:0,diasAtraso:0},
+    {id:5,nome:'Conferir ferramentas do turno',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0,diasAtraso:0},
+    {id:6,nome:'Checar extintores e EPIs',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4,diasAtraso:3},
+    {id:7,nome:'Verificar saídas de emergência',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2,diasAtraso:0},
+    {id:8,nome:'Limpeza da área operacional',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0,diasAtraso:0},
   ],
   mats:[
     {id:1,nome:'Betume asfáltico CAP 50/70',qtd:'2 toneladas',status:'pendente',respId:2,obs:'Pedido urgente'},
@@ -197,37 +217,33 @@ const DEFAULTS = {
   ]
 };
 
-// Carregar dados do localStorage ou usar defaults
-function carregar(chave, padrao) {
-  try {
-    const salvo = localStorage.getItem('gama_'+chave);
-    return salvo ? JSON.parse(salvo) : JSON.parse(JSON.stringify(padrao));
-  } catch(e) { return JSON.parse(JSON.stringify(padrao)); }
+function carregar(chave,padrao){
+  try{const s=localStorage.getItem('gama_'+chave);return s?JSON.parse(s):JSON.parse(JSON.stringify(padrao));}
+  catch(e){return JSON.parse(JSON.stringify(padrao));}
+}
+function salvar(){
+  try{
+    localStorage.setItem('gama_funcs',JSON.stringify(funcs));
+    localStorage.setItem('gama_itens',JSON.stringify(itens));
+    localStorage.setItem('gama_mats',JSON.stringify(mats));
+    localStorage.setItem('gama_ids',JSON.stringify({niId,nmId,nfId}));
+    const tag=document.getElementById('salvo-tag');
+    tag.style.display='inline-block';
+    clearTimeout(window._t);
+    window._t=setTimeout(()=>tag.style.display='none',2000);
+  }catch(e){}
 }
 
-function salvar() {
-  try {
-    localStorage.setItem('gama_funcs', JSON.stringify(funcs));
-    localStorage.setItem('gama_itens', JSON.stringify(itens));
-    localStorage.setItem('gama_mats', JSON.stringify(mats));
-    localStorage.setItem('gama_ids', JSON.stringify({niId,nmId,nfId}));
-    // Mostrar tag de salvo
-    const tag = document.getElementById('salvo-tag');
-    tag.style.display = 'inline-block';
-    clearTimeout(window._salvoTimer);
-    window._salvoTimer = setTimeout(() => tag.style.display='none', 2000);
-  } catch(e) {}
-}
+let funcs=carregar('funcs',DEFAULTS.funcs);
+let itens=carregar('itens',DEFAULTS.itens);
+let mats=carregar('mats',DEFAULTS.mats);
+const ids=carregar('ids',{niId:10,nmId:6,nfId:6});
+let niId=ids.niId,nmId=ids.nmId,nfId=ids.nfId;
+let filtro='todos',aba='checklist',editId=null;
 
-let funcs = carregar('funcs', DEFAULTS.funcs);
-let itens = carregar('itens', DEFAULTS.itens);
-let mats  = carregar('mats',  DEFAULTS.mats);
-const ids = carregar('ids', {niId:10,nmId:6,nfId:6});
-let niId=ids.niId, nmId=ids.nmId, nfId=ids.nfId;
-let filtro='todos', aba='checklist', editId=null;
+document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
 
-document.getElementById('data-hoje').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-
+function isAtrasado(item){return !item.feito && item.prior==='alta' && item.diasAtraso>0;}
 function gF(id){return funcs.find(f=>f.id===id)||funcs[funcs.length-1]||{nome:'—',tel:'',id:0};}
 function aL(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();}
 function aC(id){return AC[(id-1)%AC.length];}
@@ -235,24 +251,55 @@ function aT(id){return AT[(id-1)%AT.length];}
 function wpp(tel){window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');}
 
 function atualizarResumo(){
-  const f=itens.filter(i=>i.feito).length, t=itens.length;
+  const f=itens.filter(i=>i.feito).length,t=itens.length;
+  const atrasados=itens.filter(i=>isAtrasado(i));
   document.getElementById('r-total').textContent=f+'/'+t;
   document.getElementById('r-barra').style.width=(t?Math.round(f/t*100):0)+'%';
+  document.getElementById('r-alerta').textContent=atrasados.length;
+  const cardAlerta=document.getElementById('card-alerta');
+  cardAlerta.classList.toggle('alerta',atrasados.length>0);
   document.getElementById('r-func').textContent=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('r-mat').textContent=mats.filter(m=>m.status==='pendente').length;
+
+  // Banner de alertas
+  const banner=document.getElementById('alerta-banner');
+  if(atrasados.length>0){
+    banner.style.display='flex';
+    banner.innerHTML=`<div class="alerta-banner" style="width:100%">
+      <div class="icon">🚨</div>
+      <div class="texto">
+        <div class="titulo">${atrasados.length} tarefa${atrasados.length>1?'s':''} com atraso — ação necessária</div>
+        ${atrasados.map(i=>`<div class="item">• ${i.nome} <span style="font-weight:600">(${i.diasAtraso} dia${i.diasAtraso>1?'s':''})</span></div>`).join('')}
+      </div>
+    </div>`;
+  } else {
+    banner.style.display='none';
+  }
+
+  // Tab com alerta
+  const tabCheck=document.getElementById('tab-checklist');
+  if(atrasados.length>0){
+    tabCheck.classList.add('tem-alerta');
+    tabCheck.textContent='🚨 Checklist ('+atrasados.length+')';
+  } else {
+    tabCheck.classList.remove('tem-alerta');
+    tabCheck.textContent='✅ Checklist';
+  }
 }
 
 function popularSelects(){
   const ativos=funcs.filter(f=>f.status==='ativo');
   ['novo-resp','mat-resp'].forEach(id=>{
     const s=document.getElementById(id);
-    if(s) s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
+    if(s)s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
   });
 }
 
 function mudarAba(a,btn){
   aba=a;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));
+  document.querySelectorAll('.tab').forEach(b=>{
+    b.classList.remove('ativo');
+  });
   btn.classList.add('ativo');
   document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativo'));
   document.getElementById('aba-'+a).classList.add('ativo');
@@ -261,34 +308,52 @@ function mudarAba(a,btn){
 
 function filtrar(f){
   filtro=f;
-  ['todos','pendente','concluido'].forEach(x=>{
+  ['todos','atrasado','pendente','concluido'].forEach(x=>{
     const b=document.getElementById('f-'+x);
     if(!b)return;
-    b.classList.toggle('btn-primary',x===f);
-    b.style.color=x===f?'#fff':'';
-    b.style.borderColor=x===f?'#1a1a18':'';
+    const isAtrasadoBtn=x==='atrasado';
+    if(x===f){
+      b.style.background=isAtrasadoBtn?'#993C1D':'#1a1a18';
+      b.style.color='#fff';
+      b.style.borderColor=isAtrasadoBtn?'#993C1D':'#1a1a18';
+    } else {
+      b.style.background='transparent';
+      b.style.color=isAtrasadoBtn?'#993C1D':'';
+      b.style.borderColor=isAtrasadoBtn?'#993C1D':'';
+    }
   });
   renderChecklist();
 }
 
 function renderChecklist(){
-  const vis=itens.filter(i=>filtro==='pendente'?!i.feito:filtro==='concluido'?i.feito:true);
+  let vis;
+  if(filtro==='atrasado') vis=itens.filter(i=>isAtrasado(i));
+  else if(filtro==='pendente') vis=itens.filter(i=>!i.feito);
+  else if(filtro==='concluido') vis=itens.filter(i=>i.feito);
+  else vis=[...itens].sort((a,b)=>{
+    if(isAtrasado(a)&&!isAtrasado(b))return -1;
+    if(!isAtrasado(a)&&isAtrasado(b))return 1;
+    return 0;
+  });
+
   const g={};
   vis.forEach(i=>{if(!g[i.cat])g[i.cat]=[];g[i.cat].push(i);});
+
   document.getElementById('lista-checklist').innerHTML=Object.keys(g).map(cat=>`
     <div style="margin-bottom:18px">
       <div class="cat-label">${cat.toUpperCase()}</div>
       ${g[cat].map(item=>{
         const r=gF(item.respId);
         const em=(CI[item.cat]||CI['Outros'])[item.ii||0];
-        return `<div class="card ${item.feito?'feito':''}">
+        const atras=isAtrasado(item);
+        return `<div class="card ${item.feito?'feito':''} ${atras?'atrasado':''}">
           <div style="display:flex;align-items:flex-start;gap:10px">
             <input type="checkbox" ${item.feito?'checked':''} onchange="toggleItem(${item.id})" style="width:18px;height:18px;cursor:pointer;margin-top:3px;flex-shrink:0"/>
-            <div class="emoji-icon">${em}</div>
+            <div class="emoji-icon ${atras?'atrasado':''}">${em}</div>
             <div style="flex:1;min-width:0">
-              <div style="font-size:13px;font-weight:500;text-decoration:${item.feito?'line-through':'none'};margin-bottom:6px">${item.nome}</div>
+              <div style="font-size:13px;font-weight:500;text-decoration:${item.feito?'line-through':'none'};margin-bottom:6px;color:${atras?'#993C1D':'inherit'}">${item.nome}</div>
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                <span class="badge" style="background:${CP[item.prior].bg};color:${CP[item.prior].c}">${CP[item.prior].l}</span>
+                ${atras?`<span class="badge-atrasado">🚨 ${item.diasAtraso} dia${item.diasAtraso>1?'s':''} em atraso</span>`:`<span class="badge" style="background:${CP[item.prior].bg};color:${CP[item.prior].c}">${CP[item.prior].l}</span>`}
                 <div style="display:flex;align-items:center;gap:5px">
                   <div class="avatar" style="width:22px;height:22px;font-size:10px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
                   <span style="font-size:12px;color:#888780">${r.nome}</span>
@@ -375,39 +440,38 @@ function renderizar(){
 
 function toggleItem(id){
   const i=itens.find(x=>x.id===id);
-  if(i){i.feito=!i.feito; salvar(); renderizar();}
+  if(i){i.feito=!i.feito;if(i.feito)i.diasAtraso=0; salvar(); renderizar();}
 }
-function removerItem(id){itens=itens.filter(x=>x.id!==id); salvar(); renderizar();}
-function removerMat(id){mats=mats.filter(x=>x.id!==id); salvar(); renderizar();}
-function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v; salvar(); renderizar();}}
-function resetar(){itens.forEach(i=>i.feito=false); salvar(); renderizar();}
-
+function removerItem(id){itens=itens.filter(x=>x.id!==id);salvar();renderizar();}
+function removerMat(id){mats=mats.filter(x=>x.id!==id);salvar();renderizar();}
+function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v;salvar();renderizar();}}
+function resetar(){
+  itens.forEach(i=>{
+    if(!i.feito && i.prior==='alta') i.diasAtraso=(i.diasAtraso||0)+1;
+    i.feito=false;
+  });
+  salvar();renderizar();
+}
 function confirmarReset(){
-  if(confirm('Tem certeza? Isso vai apagar TODOS os dados salvos e voltar ao padrão.')){
-    localStorage.clear();
-    location.reload();
+  if(confirm('Tem certeza? Isso vai apagar TODOS os dados e voltar ao padrão.')){
+    localStorage.clear();location.reload();
   }
 }
-
 function adicionarItem(){
-  const n=document.getElementById('novo-nome').value.trim();
-  if(!n)return;
+  const n=document.getElementById('novo-nome').value.trim();if(!n)return;
   const cat=document.getElementById('nova-cat').value;
-  itens.push({id:niId++,nome:n,cat,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0});
+  itens.push({id:niId++,nome:n,cat,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0,diasAtraso:0});
   document.getElementById('novo-nome').value='';
-  salvar(); renderizar();
+  salvar();renderizar();
 }
-
 function adicionarMaterial(){
-  const n=document.getElementById('mat-nome').value.trim();
-  if(!n)return;
+  const n=document.getElementById('mat-nome').value.trim();if(!n)return;
   mats.push({id:nmId++,nome:n,qtd:document.getElementById('mat-qtd').value||'—',status:document.getElementById('mat-status').value,respId:parseInt(document.getElementById('mat-resp').value),obs:document.getElementById('mat-obs').value});
   document.getElementById('mat-nome').value='';
   document.getElementById('mat-qtd').value='';
   document.getElementById('mat-obs').value='';
-  salvar(); renderizar();
+  salvar();renderizar();
 }
-
 function abrirModal(limpar=true){
   if(limpar){
     editId=null;
@@ -420,7 +484,6 @@ function abrirModal(limpar=true){
   document.getElementById('modal').style.display='block';
 }
 function fecharModal(){document.getElementById('modal').style.display='none';}
-
 function editarFunc(id){
   const f=funcs.find(x=>x.id===id);if(!f)return;
   editId=id;
@@ -434,16 +497,13 @@ function editarFunc(id){
   document.getElementById('f-status').value=f.status;
   abrirModal(false);
 }
-
 function salvarFuncionario(){
   const n=document.getElementById('f-nome').value.trim();if(!n)return;
   const d={nome:n,cargo:document.getElementById('f-cargo').value,setor:document.getElementById('f-setor').value||'Geral',tel:document.getElementById('f-tel').value,email:document.getElementById('f-email').value,turno:document.getElementById('f-turno').value||'Integral',status:document.getElementById('f-status').value};
   if(editId){const i=funcs.findIndex(f=>f.id===editId);funcs[i]={...funcs[i],...d};}
   else{funcs.push({id:nfId++,...d});}
-  fecharModal();
-  salvar(); renderizar();
+  fecharModal();salvar();renderizar();
 }
-
 renderizar();
 </script>
 </body>
