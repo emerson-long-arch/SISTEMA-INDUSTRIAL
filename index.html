@@ -31,6 +31,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-primary{background:#1a1a18;color:#fff;border-color:#1a1a18;font-weight:500}
 .btn-primary:hover{background:#333}
 .btn-wpp{border-color:#25D366;color:#25D366;display:inline-flex;align-items:center;gap:4px}
+.btn-danger{border-color:#993C1D;color:#993C1D}
 .inp{width:100%;padding:9px 12px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;color:#1a1a18;font-size:13px;outline:none}
 .inp:focus{border-color:#888}
 .avatar{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
@@ -45,6 +46,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .barra-prog{height:6px;background:#e0ded6;border-radius:3px;overflow:hidden;margin-top:8px}
 .barra-inner{height:100%;background:#D4820A;border-radius:3px;transition:width .3s}
 .filtros{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.salvo-tag{font-size:11px;color:#3B6D11;background:#EAF3DE;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -61,6 +63,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <div class="container">
+
+  <div id="salvo-tag" class="salvo-tag" style="display:none">✅ Dados salvos automaticamente</div>
 
   <div class="resumo-cards">
     <div class="resumo-card">
@@ -103,7 +107,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <button class="btn btn-primary" onclick="adicionarItem()" style="align-self:flex-start">+ Adicionar</button>
       </div>
     </div>
-    <div style="margin-top:10px;text-align:right">
+    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+      <button class="btn btn-danger" onclick="confirmarReset()">🗑️ Limpar dados</button>
       <button class="btn" onclick="resetar()">🔄 Resetar para amanhã</button>
     </div>
   </div>
@@ -127,7 +132,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <div id="aba-funcionarios" class="aba">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-size:13px;color:#888780">Cadastro — Gama Industrial · Usinas de Asfalto</div>
+      <div style="font-size:13px;color:#888780">Cadastro — Gama Industrial</div>
       <button class="btn btn-primary" onclick="abrirModal()">+ Novo funcionário</button>
     </div>
     <div id="lista-funcionarios"></div>
@@ -165,50 +170,86 @@ const SF={ativo:{bg:'#EAF3DE',c:'#3B6D11',l:'Ativo'},ferias:{bg:'#FAEEDA',c:'#85
 const CI={Máquinas:['⚙️','🔩','🛠️','🔄','⛽'],Ferramentas:['🔧','🪛','🔨','📐','✂️'],Segurança:['🦺','🪖','🧤','🥽','🧯'],Limpeza:['🧹','🪣','🧽','🫧','🗑️'],Usina:['🏭','🌡️','⚗️','🔥','📊'],Outros:['📋','📦','🔍','📊','🗂️']};
 const AC=['#CECBF6','#9FE1CB','#F5C4B3','#FAC775','#B5D4F4','#C0DD97','#F4C0D1'];
 const AT=['#3C3489','#085041','#712B13','#854F0B','#0C447C','#27500A','#72243E'];
-let funcs=[
-  {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
-  {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
-  {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
-  {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
-  {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
-];
-let itens=[
-  {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1},
-  {id:2,nome:'Checar nível de betume no tanque',cat:'Usina',prior:'alta',feito:false,respId:2,ii:0},
-  {id:3,nome:'Inspecionar correia transportadora',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4},
-  {id:4,nome:'Verificar óleo do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:0},
-  {id:5,nome:'Conferir ferramentas do turno',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0},
-  {id:6,nome:'Checar extintores e EPIs',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4},
-  {id:7,nome:'Verificar saídas de emergência',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2},
-  {id:8,nome:'Limpeza da área operacional',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0},
-];
-let mats=[
-  {id:1,nome:'Betume asfáltico CAP 50/70',qtd:'2 toneladas',status:'pendente',respId:2,obs:'Pedido urgente'},
-  {id:2,nome:'Óleo lubrificante ISO 46',qtd:'5 litros',status:'pedido',respId:1,obs:'Fornecedor: Peças & Cia'},
-  {id:3,nome:'Luvas de segurança térmica',qtd:'10 pares',status:'chegou',respId:3,obs:'Reabastecido'},
-  {id:4,nome:'Filtro do compressor',qtd:'2 unidades',status:'pendente',respId:1,obs:''},
-];
-let filtro='todos',aba='checklist',niId=10,nmId=6,nfId=6,editId=null;
-document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-function gF(id){return funcs.find(f=>f.id===id)||funcs[4];}
+
+const DEFAULTS = {
+  funcs:[
+    {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
+    {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
+    {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
+    {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
+    {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
+  ],
+  itens:[
+    {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1},
+    {id:2,nome:'Checar nível de betume no tanque',cat:'Usina',prior:'alta',feito:false,respId:2,ii:0},
+    {id:3,nome:'Inspecionar correia transportadora',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4},
+    {id:4,nome:'Verificar óleo do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:0},
+    {id:5,nome:'Conferir ferramentas do turno',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0},
+    {id:6,nome:'Checar extintores e EPIs',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4},
+    {id:7,nome:'Verificar saídas de emergência',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2},
+    {id:8,nome:'Limpeza da área operacional',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0},
+  ],
+  mats:[
+    {id:1,nome:'Betume asfáltico CAP 50/70',qtd:'2 toneladas',status:'pendente',respId:2,obs:'Pedido urgente'},
+    {id:2,nome:'Óleo lubrificante ISO 46',qtd:'5 litros',status:'pedido',respId:1,obs:'Fornecedor: Peças & Cia'},
+    {id:3,nome:'Luvas de segurança térmica',qtd:'10 pares',status:'chegou',respId:3,obs:'Reabastecido'},
+    {id:4,nome:'Filtro do compressor',qtd:'2 unidades',status:'pendente',respId:1,obs:''},
+  ]
+};
+
+// Carregar dados do localStorage ou usar defaults
+function carregar(chave, padrao) {
+  try {
+    const salvo = localStorage.getItem('gama_'+chave);
+    return salvo ? JSON.parse(salvo) : JSON.parse(JSON.stringify(padrao));
+  } catch(e) { return JSON.parse(JSON.stringify(padrao)); }
+}
+
+function salvar() {
+  try {
+    localStorage.setItem('gama_funcs', JSON.stringify(funcs));
+    localStorage.setItem('gama_itens', JSON.stringify(itens));
+    localStorage.setItem('gama_mats', JSON.stringify(mats));
+    localStorage.setItem('gama_ids', JSON.stringify({niId,nmId,nfId}));
+    // Mostrar tag de salvo
+    const tag = document.getElementById('salvo-tag');
+    tag.style.display = 'inline-block';
+    clearTimeout(window._salvoTimer);
+    window._salvoTimer = setTimeout(() => tag.style.display='none', 2000);
+  } catch(e) {}
+}
+
+let funcs = carregar('funcs', DEFAULTS.funcs);
+let itens = carregar('itens', DEFAULTS.itens);
+let mats  = carregar('mats',  DEFAULTS.mats);
+const ids = carregar('ids', {niId:10,nmId:6,nfId:6});
+let niId=ids.niId, nmId=ids.nmId, nfId=ids.nfId;
+let filtro='todos', aba='checklist', editId=null;
+
+document.getElementById('data-hoje').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+function gF(id){return funcs.find(f=>f.id===id)||funcs[funcs.length-1]||{nome:'—',tel:'',id:0};}
 function aL(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();}
 function aC(id){return AC[(id-1)%AC.length];}
 function aT(id){return AT[(id-1)%AT.length];}
 function wpp(tel){window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');}
+
 function atualizarResumo(){
-  const f=itens.filter(i=>i.feito).length,t=itens.length;
+  const f=itens.filter(i=>i.feito).length, t=itens.length;
   document.getElementById('r-total').textContent=f+'/'+t;
   document.getElementById('r-barra').style.width=(t?Math.round(f/t*100):0)+'%';
   document.getElementById('r-func').textContent=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('r-mat').textContent=mats.filter(m=>m.status==='pendente').length;
 }
+
 function popularSelects(){
   const ativos=funcs.filter(f=>f.status==='ativo');
   ['novo-resp','mat-resp'].forEach(id=>{
     const s=document.getElementById(id);
-    if(s)s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
+    if(s) s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
   });
 }
+
 function mudarAba(a,btn){
   aba=a;
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));
@@ -217,6 +258,7 @@ function mudarAba(a,btn){
   document.getElementById('aba-'+a).classList.add('ativo');
   renderizar();
 }
+
 function filtrar(f){
   filtro=f;
   ['todos','pendente','concluido'].forEach(x=>{
@@ -228,6 +270,7 @@ function filtrar(f){
   });
   renderChecklist();
 }
+
 function renderChecklist(){
   const vis=itens.filter(i=>filtro==='pendente'?!i.feito:filtro==='concluido'?i.feito:true);
   const g={};
@@ -258,8 +301,10 @@ function renderChecklist(){
         </div>`;
       }).join('')}
     </div>`).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum item aqui.</div>';
-  popularSelects();atualizarResumo();
+  popularSelects();
+  atualizarResumo();
 }
+
 function renderMateriais(){
   document.getElementById('lista-materiais').innerHTML=mats.map(m=>{
     const r=gF(m.respId);
@@ -287,8 +332,10 @@ function renderMateriais(){
       </div>
     </div>`;
   }).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum material.</div>';
-  popularSelects();atualizarResumo();
+  popularSelects();
+  atualizarResumo();
 }
+
 function renderFuncionarios(){
   const at=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('lista-funcionarios').innerHTML=`
@@ -319,30 +366,48 @@ function renderFuncionarios(){
     </div>`).join('')}`;
   atualizarResumo();
 }
+
 function renderizar(){
-  if(aba==='checklist')renderChecklist();
-  else if(aba==='materiais')renderMateriais();
-  else if(aba==='funcionarios')renderFuncionarios();
+  if(aba==='checklist') renderChecklist();
+  else if(aba==='materiais') renderMateriais();
+  else if(aba==='funcionarios') renderFuncionarios();
 }
-function toggleItem(id){const i=itens.find(x=>x.id===id);if(i){i.feito=!i.feito;renderizar();}}
-function removerItem(id){itens=itens.filter(x=>x.id!==id);renderizar();}
-function removerMat(id){mats=mats.filter(x=>x.id!==id);renderizar();}
-function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v;renderizar();}}
-function resetar(){itens.forEach(i=>i.feito=false);renderizar();}
+
+function toggleItem(id){
+  const i=itens.find(x=>x.id===id);
+  if(i){i.feito=!i.feito; salvar(); renderizar();}
+}
+function removerItem(id){itens=itens.filter(x=>x.id!==id); salvar(); renderizar();}
+function removerMat(id){mats=mats.filter(x=>x.id!==id); salvar(); renderizar();}
+function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v; salvar(); renderizar();}}
+function resetar(){itens.forEach(i=>i.feito=false); salvar(); renderizar();}
+
+function confirmarReset(){
+  if(confirm('Tem certeza? Isso vai apagar TODOS os dados salvos e voltar ao padrão.')){
+    localStorage.clear();
+    location.reload();
+  }
+}
+
 function adicionarItem(){
-  const n=document.getElementById('novo-nome').value.trim();if(!n)return;
+  const n=document.getElementById('novo-nome').value.trim();
+  if(!n)return;
   const cat=document.getElementById('nova-cat').value;
   itens.push({id:niId++,nome:n,cat,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0});
-  document.getElementById('novo-nome').value='';renderizar();
+  document.getElementById('novo-nome').value='';
+  salvar(); renderizar();
 }
+
 function adicionarMaterial(){
-  const n=document.getElementById('mat-nome').value.trim();if(!n)return;
+  const n=document.getElementById('mat-nome').value.trim();
+  if(!n)return;
   mats.push({id:nmId++,nome:n,qtd:document.getElementById('mat-qtd').value||'—',status:document.getElementById('mat-status').value,respId:parseInt(document.getElementById('mat-resp').value),obs:document.getElementById('mat-obs').value});
   document.getElementById('mat-nome').value='';
   document.getElementById('mat-qtd').value='';
   document.getElementById('mat-obs').value='';
-  renderizar();
+  salvar(); renderizar();
 }
+
 function abrirModal(limpar=true){
   if(limpar){
     editId=null;
@@ -355,6 +420,7 @@ function abrirModal(limpar=true){
   document.getElementById('modal').style.display='block';
 }
 function fecharModal(){document.getElementById('modal').style.display='none';}
+
 function editarFunc(id){
   const f=funcs.find(x=>x.id===id);if(!f)return;
   editId=id;
@@ -368,13 +434,16 @@ function editarFunc(id){
   document.getElementById('f-status').value=f.status;
   abrirModal(false);
 }
+
 function salvarFuncionario(){
   const n=document.getElementById('f-nome').value.trim();if(!n)return;
   const d={nome:n,cargo:document.getElementById('f-cargo').value,setor:document.getElementById('f-setor').value||'Geral',tel:document.getElementById('f-tel').value,email:document.getElementById('f-email').value,turno:document.getElementById('f-turno').value||'Integral',status:document.getElementById('f-status').value};
   if(editId){const i=funcs.findIndex(f=>f.id===editId);funcs[i]={...funcs[i],...d};}
   else{funcs.push({id:nfId++,...d});}
-  fecharModal();renderizar();
+  fecharModal();
+  salvar(); renderizar();
 }
+
 renderizar();
 </script>
 </body>
