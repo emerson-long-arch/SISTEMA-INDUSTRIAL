@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Painel Industrial — Fábrica de Máquinas</title>
+<title>Gama Industrial — Painel de Gestão</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f0;color:#1a1a18;min-height:100vh}
 .header{background:#1a1a18;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
-.header h1{font-size:16px;font-weight:500}
-.header span{font-size:12px;opacity:.6}
+.header-left{display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;border-radius:8px;background:#E8593C;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
+.header h1{font-size:16px;font-weight:600}
+.header p{font-size:11px;opacity:.5;margin-top:2px}
+.header-right{font-size:12px;opacity:.5;text-align:right}
 .container{max-width:800px;margin:0 auto;padding:24px 16px}
 .resumo-cards{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
 .resumo-card{flex:1;min-width:100px;background:#fff;border-radius:12px;padding:14px;border:1px solid #e0ded6;text-align:center}
@@ -40,20 +43,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .modal h2{font-size:15px;font-weight:600;margin-bottom:16px}
 .form-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .barra-prog{height:6px;background:#e0ded6;border-radius:3px;overflow:hidden;margin-top:8px}
-.barra-inner{height:100%;background:#1a1a18;border-radius:3px;transition:width .3s}
+.barra-inner{height:100%;background:#E8593C;border-radius:3px;transition:width .3s}
 .filtros{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>⚙️ Painel Industrial</h1>
-  <span id="data-hoje"></span>
+  <div class="header-left">
+    <div class="logo">G</div>
+    <div>
+      <h1>Gama Industrial</h1>
+      <p>Painel de gestão operacional · Manaus, AM</p>
+    </div>
+  </div>
+  <div class="header-right" id="data-hoje"></div>
 </div>
 
 <div class="container">
 
-  <!-- Resumo -->
   <div class="resumo-cards">
     <div class="resumo-card">
       <div class="num" id="r-total">0/0</div>
@@ -70,14 +78,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- Abas -->
   <div class="tabs">
     <button class="tab ativo" onclick="mudarAba('checklist',this)">✅ Checklist</button>
     <button class="tab" onclick="mudarAba('materiais',this)">📦 Materiais</button>
     <button class="tab" onclick="mudarAba('funcionarios',this)">👷 Funcionários</button>
   </div>
 
-  <!-- CHECKLIST -->
   <div id="aba-checklist" class="aba ativo">
     <div class="filtros">
       <button class="btn btn-primary" id="f-todos" onclick="filtrar('todos')">Todos</button>
@@ -90,14 +96,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="form-row">
         <input class="inp" id="novo-nome" placeholder="Ex: Verificar correia da máquina 3"/>
         <div class="grid2">
-          <select class="inp" id="nova-cat">
-            <option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Outros</option>
-          </select>
-          <select class="inp" id="nova-prior">
-            <option value="alta">Alta prioridade</option>
-            <option value="media" selected>Média prioridade</option>
-            <option value="baixa">Baixa prioridade</option>
-          </select>
+          <select class="inp" id="nova-cat"><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Outros</option></select>
+          <select class="inp" id="nova-prior"><option value="alta">Alta prioridade</option><option value="media" selected>Média prioridade</option><option value="baixa">Baixa prioridade</option></select>
           <select class="inp" id="novo-resp"></select>
         </div>
         <button class="btn btn-primary" onclick="adicionarItem()" style="align-self:flex-start">+ Adicionar</button>
@@ -108,7 +108,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- MATERIAIS -->
   <div id="aba-materiais" class="aba">
     <div id="lista-materiais"></div>
     <div style="margin-top:20px;border-top:1px solid #e0ded6;padding-top:16px">
@@ -117,11 +116,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <input class="inp" id="mat-nome" placeholder="Ex: Lixa grão 120, Correia B52..."/>
         <div class="grid2">
           <input class="inp" id="mat-qtd" placeholder="Qtd. Ex: 10 unidades"/>
-          <select class="inp" id="mat-status">
-            <option value="pendente">A comprar</option>
-            <option value="pedido">Pedido feito</option>
-            <option value="chegou">Chegou</option>
-          </select>
+          <select class="inp" id="mat-status"><option value="pendente">A comprar</option><option value="pedido">Pedido feito</option><option value="chegou">Chegou</option></select>
           <select class="inp" id="mat-resp"></select>
         </div>
         <input class="inp" id="mat-obs" placeholder="Observação (opcional)"/>
@@ -130,10 +125,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- FUNCIONÁRIOS -->
   <div id="aba-funcionarios" class="aba">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-size:13px;color:#888780">Cadastro de funcionários</div>
+      <div style="font-size:13px;color:#888780">Cadastro — Gama Industrial</div>
       <button class="btn btn-primary" onclick="abrirModal()">+ Novo funcionário</button>
     </div>
     <div id="lista-funcionarios"></div>
@@ -141,7 +135,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
-<!-- MODAL -->
 <div id="modal" style="display:none">
   <div class="modal-bg" onclick="fecharModal()">
     <div class="modal" onclick="event.stopPropagation()">
@@ -149,22 +142,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="form-row">
         <input class="inp" id="f-nome" placeholder="Nome completo"/>
         <input class="inp" id="f-cargo" placeholder="Cargo. Ex: Técnico de manutenção"/>
-        <select class="inp" id="f-setor">
-          <option value="">Selecione o setor</option>
-          <option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Geral</option>
-        </select>
+        <select class="inp" id="f-setor"><option value="">Selecione o setor</option><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Geral</option></select>
         <input class="inp" id="f-tel" placeholder="WhatsApp. Ex: 92 99999-0000"/>
         <input class="inp" id="f-email" placeholder="E-mail (opcional)"/>
         <div class="grid2">
-          <select class="inp" id="f-turno">
-            <option value="">Turno</option>
-            <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option>
-          </select>
-          <select class="inp" id="f-status">
-            <option value="ativo">Ativo</option>
-            <option value="ferias">De férias</option>
-            <option value="afastado">Afastado</option>
-          </select>
+          <select class="inp" id="f-turno"><option value="">Turno</option><option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option></select>
+          <select class="inp" id="f-status"><option value="ativo">Ativo</option><option value="ferias">De férias</option><option value="afastado">Afastado</option></select>
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:flex-end">
@@ -182,13 +165,12 @@ const SF={ativo:{bg:'#EAF3DE',c:'#3B6D11',l:'Ativo'},ferias:{bg:'#FAEEDA',c:'#85
 const CI={Máquinas:['⚙️','🔩','🛠️','🔄','⛽'],Ferramentas:['🔧','🪛','🔨','📐','✂️'],Segurança:['🦺','🪖','🧤','🥽','🧯'],Limpeza:['🧹','🪣','🧽','🫧','🗑️'],Outros:['📋','📦','🔍','📊','🗂️']};
 const AC=['#CECBF6','#9FE1CB','#F5C4B3','#FAC775','#B5D4F4','#C0DD97','#F4C0D1'];
 const AT=['#3C3489','#085041','#712B13','#854F0B','#0C447C','#27500A','#72243E'];
-
 let funcs=[
-  {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'carlos@fabrica.com',turno:'Manhã',status:'ativo'},
-  {id:2,nome:'Ana Ferreira',cargo:'Operadora de ferramentas',setor:'Ferramentas',tel:'92 98134-2211',email:'ana@fabrica.com',turno:'Tarde',status:'ativo'},
+  {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
+  {id:2,nome:'Ana Ferreira',cargo:'Operadora de ferramentas',setor:'Ferramentas',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
   {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
-  {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ferias'},
-  {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'marcos@fabrica.com',turno:'Integral',status:'ativo'},
+  {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
+  {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
 ];
 let itens=[
   {id:1,nome:'Verificar óleo da prensa hidráulica',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:0},
@@ -208,17 +190,13 @@ let mats=[
   {id:4,nome:'Luvas de segurança',qtd:'10 pares',status:'chegou',respId:3,obs:'Reabastecido'},
   {id:5,nome:'Pano de limpeza industrial',qtd:'1 pacote',status:'pendente',respId:4,obs:''},
 ];
-
 let filtro='todos',aba='checklist',niId=10,nmId=6,nfId=6,editId=null;
-
 document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-
 function gF(id){return funcs.find(f=>f.id===id)||funcs[4];}
 function aL(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();}
 function aC(id){return AC[(id-1)%AC.length];}
 function aT(id){return AT[(id-1)%AT.length];}
 function wpp(tel){window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');}
-
 function atualizarResumo(){
   const f=itens.filter(i=>i.feito).length,t=itens.length;
   document.getElementById('r-total').textContent=f+'/'+t;
@@ -226,15 +204,13 @@ function atualizarResumo(){
   document.getElementById('r-func').textContent=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('r-mat').textContent=mats.filter(m=>m.status==='pendente').length;
 }
-
 function popularSelects(){
   const ativos=funcs.filter(f=>f.status==='ativo');
   ['novo-resp','mat-resp'].forEach(id=>{
     const s=document.getElementById(id);
-    if(s) s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
+    if(s)s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
   });
 }
-
 function mudarAba(a,btn){
   aba=a;
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));
@@ -243,7 +219,6 @@ function mudarAba(a,btn){
   document.getElementById('aba-'+a).classList.add('ativo');
   renderizar();
 }
-
 function filtrar(f){
   filtro=f;
   ['todos','pendente','concluido'].forEach(x=>{
@@ -255,7 +230,6 @@ function filtrar(f){
   });
   renderChecklist();
 }
-
 function renderChecklist(){
   const vis=itens.filter(i=>filtro==='pendente'?!i.feito:filtro==='concluido'?i.feito:true);
   const g={};
@@ -286,10 +260,8 @@ function renderChecklist(){
         </div>`;
       }).join('')}
     </div>`).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum item aqui.</div>';
-  popularSelects();
-  atualizarResumo();
+  popularSelects();atualizarResumo();
 }
-
 function renderMateriais(){
   document.getElementById('lista-materiais').innerHTML=mats.map(m=>{
     const r=gF(m.respId);
@@ -317,10 +289,8 @@ function renderMateriais(){
       </div>
     </div>`;
   }).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum material.</div>';
-  popularSelects();
-  atualizarResumo();
+  popularSelects();atualizarResumo();
 }
-
 function renderFuncionarios(){
   const at=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('lista-funcionarios').innerHTML=`
@@ -351,38 +321,30 @@ function renderFuncionarios(){
     </div>`).join('')}`;
   atualizarResumo();
 }
-
 function renderizar(){
-  if(aba==='checklist') renderChecklist();
-  else if(aba==='materiais') renderMateriais();
-  else if(aba==='funcionarios') renderFuncionarios();
+  if(aba==='checklist')renderChecklist();
+  else if(aba==='materiais')renderMateriais();
+  else if(aba==='funcionarios')renderFuncionarios();
 }
-
 function toggleItem(id){const i=itens.find(x=>x.id===id);if(i){i.feito=!i.feito;renderizar();}}
 function removerItem(id){itens=itens.filter(x=>x.id!==id);renderizar();}
 function removerMat(id){mats=mats.filter(x=>x.id!==id);renderizar();}
 function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v;renderizar();}}
 function resetar(){itens.forEach(i=>i.feito=false);renderizar();}
-
 function adicionarItem(){
-  const n=document.getElementById('novo-nome').value.trim();
-  if(!n)return;
+  const n=document.getElementById('novo-nome').value.trim();if(!n)return;
   const cat=document.getElementById('nova-cat').value;
   itens.push({id:niId++,nome:n,cat,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0});
-  document.getElementById('novo-nome').value='';
-  renderizar();
+  document.getElementById('novo-nome').value='';renderizar();
 }
-
 function adicionarMaterial(){
-  const n=document.getElementById('mat-nome').value.trim();
-  if(!n)return;
+  const n=document.getElementById('mat-nome').value.trim();if(!n)return;
   mats.push({id:nmId++,nome:n,qtd:document.getElementById('mat-qtd').value||'—',status:document.getElementById('mat-status').value,respId:parseInt(document.getElementById('mat-resp').value),obs:document.getElementById('mat-obs').value});
   document.getElementById('mat-nome').value='';
   document.getElementById('mat-qtd').value='';
   document.getElementById('mat-obs').value='';
   renderizar();
 }
-
 function abrirModal(limpar=true){
   if(limpar){
     editId=null;
@@ -395,7 +357,6 @@ function abrirModal(limpar=true){
   document.getElementById('modal').style.display='block';
 }
 function fecharModal(){document.getElementById('modal').style.display='none';}
-
 function editarFunc(id){
   const f=funcs.find(x=>x.id===id);if(!f)return;
   editId=id;
@@ -409,18 +370,14 @@ function editarFunc(id){
   document.getElementById('f-status').value=f.status;
   abrirModal(false);
 }
-
 function salvarFuncionario(){
   const n=document.getElementById('f-nome').value.trim();if(!n)return;
   const d={nome:n,cargo:document.getElementById('f-cargo').value,setor:document.getElementById('f-setor').value||'Geral',tel:document.getElementById('f-tel').value,email:document.getElementById('f-email').value,turno:document.getElementById('f-turno').value||'Integral',status:document.getElementById('f-status').value};
   if(editId){const i=funcs.findIndex(f=>f.id===editId);funcs[i]={...funcs[i],...d};}
   else{funcs.push({id:nfId++,...d});}
-  fecharModal();
-  renderizar();
+  fecharModal();renderizar();
 }
-
 renderizar();
 </script>
 </body>
 </html>
-EOF
