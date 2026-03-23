@@ -7,12 +7,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f0;color:#1a1a18;min-height:100vh}
-.header{background:#1a1a18;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
-.header-left{display:flex;align-items:center;gap:12px}
-.logo{width:38px;height:38px;border-radius:8px;background:#E8593C;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0}
-.header h1{font-size:16px;font-weight:600}
+.header{background:#1a1a18;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:14px}
+.logo-img{width:48px;height:48px;object-fit:contain;border-radius:6px;background:#000;padding:2px}
+.header h1{font-size:16px;font-weight:700;letter-spacing:.5px}
 .header p{font-size:11px;opacity:.5;margin-top:2px}
-.header-right{font-size:12px;opacity:.5;text-align:right}
+.header-right{font-size:12px;opacity:.5;text-align:right;line-height:1.6}
 .container{max-width:800px;margin:0 auto;padding:24px 16px}
 .resumo-cards{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
 .resumo-card{flex:1;min-width:100px;background:#fff;border-radius:12px;padding:14px;border:1px solid #e0ded6;text-align:center}
@@ -43,7 +43,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .modal h2{font-size:15px;font-weight:600;margin-bottom:16px}
 .form-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .barra-prog{height:6px;background:#e0ded6;border-radius:3px;overflow:hidden;margin-top:8px}
-.barra-inner{height:100%;background:#E8593C;border-radius:3px;transition:width .3s}
+.barra-inner{height:100%;background:#D4820A;border-radius:3px;transition:width .3s}
 .filtros{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 </style>
 </head>
@@ -51,10 +51,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="header">
   <div class="header-left">
-    <div class="logo">G</div>
+    <img class="logo-img" src="20250701_1115_Logo%20Gama%20Industrial_remix_01jz35cb4ze17vgv5pyqgv56sc.png" alt="Gama Industrial"/>
     <div>
       <h1>Gama Industrial</h1>
-      <p>Painel de gestão operacional · Manaus, AM</p>
+      <p>Usinas de Asfalto · Manaus, AM</p>
     </div>
   </div>
   <div class="header-right" id="data-hoje"></div>
@@ -94,9 +94,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="margin-top:20px;border-top:1px solid #e0ded6;padding-top:16px">
       <div style="font-size:13px;font-weight:600;margin-bottom:10px">+ Adicionar tarefa</div>
       <div class="form-row">
-        <input class="inp" id="novo-nome" placeholder="Ex: Verificar correia da máquina 3"/>
+        <input class="inp" id="novo-nome" placeholder="Ex: Verificar temperatura da usina"/>
         <div class="grid2">
-          <select class="inp" id="nova-cat"><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Outros</option></select>
+          <select class="inp" id="nova-cat"><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Usina</option><option>Outros</option></select>
           <select class="inp" id="nova-prior"><option value="alta">Alta prioridade</option><option value="media" selected>Média prioridade</option><option value="baixa">Baixa prioridade</option></select>
           <select class="inp" id="novo-resp"></select>
         </div>
@@ -113,9 +113,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div style="margin-top:20px;border-top:1px solid #e0ded6;padding-top:16px">
       <div style="font-size:13px;font-weight:600;margin-bottom:10px">+ Adicionar material</div>
       <div class="form-row">
-        <input class="inp" id="mat-nome" placeholder="Ex: Lixa grão 120, Correia B52..."/>
+        <input class="inp" id="mat-nome" placeholder="Ex: Betume, Agregado, Óleo..."/>
         <div class="grid2">
-          <input class="inp" id="mat-qtd" placeholder="Qtd. Ex: 10 unidades"/>
+          <input class="inp" id="mat-qtd" placeholder="Qtd. Ex: 10 toneladas"/>
           <select class="inp" id="mat-status"><option value="pendente">A comprar</option><option value="pedido">Pedido feito</option><option value="chegou">Chegou</option></select>
           <select class="inp" id="mat-resp"></select>
         </div>
@@ -127,7 +127,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <div id="aba-funcionarios" class="aba">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="font-size:13px;color:#888780">Cadastro — Gama Industrial</div>
+      <div style="font-size:13px;color:#888780">Cadastro — Gama Industrial · Usinas de Asfalto</div>
       <button class="btn btn-primary" onclick="abrirModal()">+ Novo funcionário</button>
     </div>
     <div id="lista-funcionarios"></div>
@@ -141,8 +141,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <h2 id="modal-titulo">Novo funcionário</h2>
       <div class="form-row">
         <input class="inp" id="f-nome" placeholder="Nome completo"/>
-        <input class="inp" id="f-cargo" placeholder="Cargo. Ex: Técnico de manutenção"/>
-        <select class="inp" id="f-setor"><option value="">Selecione o setor</option><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Geral</option></select>
+        <input class="inp" id="f-cargo" placeholder="Cargo. Ex: Operador de usina"/>
+        <select class="inp" id="f-setor"><option value="">Selecione o setor</option><option>Máquinas</option><option>Ferramentas</option><option>Segurança</option><option>Limpeza</option><option>Usina</option><option>Geral</option></select>
         <input class="inp" id="f-tel" placeholder="WhatsApp. Ex: 92 99999-0000"/>
         <input class="inp" id="f-email" placeholder="E-mail (opcional)"/>
         <div class="grid2">
@@ -162,33 +162,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 const CP={alta:{bg:'#FAECE7',c:'#993C1D',l:'Alta'},media:{bg:'#FAEEDA',c:'#854F0B',l:'Média'},baixa:{bg:'#EAF3DE',c:'#3B6D11',l:'Baixa'}};
 const CS={pendente:{bg:'#FAECE7',c:'#993C1D',l:'A comprar'},pedido:{bg:'#FAEEDA',c:'#854F0B',l:'Pedido feito'},chegou:{bg:'#EAF3DE',c:'#3B6D11',l:'Chegou'}};
 const SF={ativo:{bg:'#EAF3DE',c:'#3B6D11',l:'Ativo'},ferias:{bg:'#FAEEDA',c:'#854F0B',l:'Férias'},afastado:{bg:'#FAECE7',c:'#993C1D',l:'Afastado'}};
-const CI={Máquinas:['⚙️','🔩','🛠️','🔄','⛽'],Ferramentas:['🔧','🪛','🔨','📐','✂️'],Segurança:['🦺','🪖','🧤','🥽','🧯'],Limpeza:['🧹','🪣','🧽','🫧','🗑️'],Outros:['📋','📦','🔍','📊','🗂️']};
+const CI={Máquinas:['⚙️','🔩','🛠️','🔄','⛽'],Ferramentas:['🔧','🪛','🔨','📐','✂️'],Segurança:['🦺','🪖','🧤','🥽','🧯'],Limpeza:['🧹','🪣','🧽','🫧','🗑️'],Usina:['🏭','🌡️','⚗️','🔥','📊'],Outros:['📋','📦','🔍','📊','🗂️']};
 const AC=['#CECBF6','#9FE1CB','#F5C4B3','#FAC775','#B5D4F4','#C0DD97','#F4C0D1'];
 const AT=['#3C3489','#085041','#712B13','#854F0B','#0C447C','#27500A','#72243E'];
 let funcs=[
   {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
-  {id:2,nome:'Ana Ferreira',cargo:'Operadora de ferramentas',setor:'Ferramentas',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
+  {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
   {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
   {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
   {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
 ];
 let itens=[
-  {id:1,nome:'Verificar óleo da prensa hidráulica',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:0},
-  {id:2,nome:'Checar correia transportadora linha 2',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4},
-  {id:3,nome:'Inspecionar filtro do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:1},
-  {id:4,nome:'Conferir calibração das chaves de torque',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0},
-  {id:5,nome:'Verificar estado das lixadeiras',cat:'Ferramentas',prior:'baixa',feito:false,respId:2,ii:2},
-  {id:6,nome:'Checar extintores e saídas de emergência',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4},
-  {id:7,nome:'Verificar EPIs no almoxarifado',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2},
-  {id:8,nome:'Limpeza da área de usinagem',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0},
-  {id:9,nome:'Verificar descarte de resíduos',cat:'Limpeza',prior:'media',feito:false,respId:4,ii:2},
+  {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1},
+  {id:2,nome:'Checar nível de betume no tanque',cat:'Usina',prior:'alta',feito:false,respId:2,ii:0},
+  {id:3,nome:'Inspecionar correia transportadora',cat:'Máquinas',prior:'alta',feito:false,respId:1,ii:4},
+  {id:4,nome:'Verificar óleo do compressor',cat:'Máquinas',prior:'media',feito:false,respId:1,ii:0},
+  {id:5,nome:'Conferir ferramentas do turno',cat:'Ferramentas',prior:'media',feito:false,respId:2,ii:0},
+  {id:6,nome:'Checar extintores e EPIs',cat:'Segurança',prior:'alta',feito:false,respId:3,ii:4},
+  {id:7,nome:'Verificar saídas de emergência',cat:'Segurança',prior:'media',feito:false,respId:3,ii:2},
+  {id:8,nome:'Limpeza da área operacional',cat:'Limpeza',prior:'baixa',feito:false,respId:4,ii:0},
 ];
 let mats=[
-  {id:1,nome:'Lixa grão 120',qtd:'20 folhas',status:'pendente',respId:2,obs:'Comprar antes de sexta'},
-  {id:2,nome:'Correia B52',qtd:'2 unidades',status:'pedido',respId:1,obs:'Fornecedor: Peças & Cia'},
-  {id:3,nome:'Óleo lubrificante ISO 46',qtd:'5 litros',status:'pendente',respId:1,obs:''},
-  {id:4,nome:'Luvas de segurança',qtd:'10 pares',status:'chegou',respId:3,obs:'Reabastecido'},
-  {id:5,nome:'Pano de limpeza industrial',qtd:'1 pacote',status:'pendente',respId:4,obs:''},
+  {id:1,nome:'Betume asfáltico CAP 50/70',qtd:'2 toneladas',status:'pendente',respId:2,obs:'Pedido urgente'},
+  {id:2,nome:'Óleo lubrificante ISO 46',qtd:'5 litros',status:'pedido',respId:1,obs:'Fornecedor: Peças & Cia'},
+  {id:3,nome:'Luvas de segurança térmica',qtd:'10 pares',status:'chegou',respId:3,obs:'Reabastecido'},
+  {id:4,nome:'Filtro do compressor',qtd:'2 unidades',status:'pendente',respId:1,obs:''},
 ];
 let filtro='todos',aba='checklist',niId=10,nmId=6,nfId=6,editId=null;
 document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
