@@ -12,10 +12,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .logo-img{width:48px;height:48px;object-fit:contain;border-radius:6px;background:#000;padding:2px}
 .header h1{font-size:16px;font-weight:700;letter-spacing:.5px}
 .header p{font-size:11px;opacity:.5;margin-top:2px}
-.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.header-date{font-size:12px;opacity:.5;text-align:right}
-.btn-pdf{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid #D4820A;background:#D4820A;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header-date{font-size:12px;opacity:.5}
+.btn-pdf{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #D4820A;background:#D4820A;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
 .btn-pdf:hover{background:#b36c08}
+.btn-wpp-auto{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid #25D366;background:#25D366;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-wpp-auto:hover{background:#1da851}
 .container{max-width:800px;margin:0 auto;padding:24px 16px}
 .resumo-cards{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
 .resumo-card{flex:1;min-width:100px;background:#fff;border-radius:12px;padding:14px;border:1px solid #e0ded6;text-align:center}
@@ -24,7 +26,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .resumo-card.alerta{background:#FAECE7;border-color:#F0997B}
 .resumo-card.alerta .num{color:#993C1D}
 .resumo-card.alerta .label{color:#993C1D}
-.alerta-banner{background:#FAECE7;border:1px solid #F0997B;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;width:100%}
+.alerta-banner{background:#FAECE7;border:1px solid #F0997B;border-radius:12px;padding:14px 16px;margin-bottom:16px;width:100%}
 .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .tab{padding:8px 18px;border-radius:20px;border:1px solid #d3d1c7;background:transparent;color:#5f5e5a;font-size:13px;cursor:pointer;transition:all .2s}
 .tab.ativo{background:#1a1a18;color:#fff;border-color:#1a1a18}
@@ -43,6 +45,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-primary{background:#1a1a18;color:#fff;border-color:#1a1a18;font-weight:500}
 .btn-primary:hover{background:#333}
 .btn-wpp{border-color:#25D366;color:#25D366;display:inline-flex;align-items:center;gap:4px}
+.btn-wpp-item{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;border:1px solid #25D366;background:transparent;color:#25D366;font-size:11px;cursor:pointer}
+.btn-wpp-alerta{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:12px;border:none;background:#25D366;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
 .btn-danger{border-color:#993C1D;color:#993C1D}
 .inp{width:100%;padding:9px 12px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;color:#1a1a18;font-size:13px;outline:none}
 .inp:focus{border-color:#888}
@@ -53,26 +57,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .grid2{display:flex;gap:8px;flex-wrap:wrap}
 .grid2>*{flex:1;min-width:140px}
 .modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999}
-.modal{background:#fff;border-radius:16px;padding:24px;width:92%;max-width:440px;border:1px solid #d3d1c7}
+.modal{background:#fff;border-radius:16px;padding:24px;width:92%;max-width:440px;border:1px solid #d3d1c7;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:15px;font-weight:600;margin-bottom:16px}
 .form-row{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .barra-prog{height:6px;background:#e0ded6;border-radius:3px;overflow:hidden;margin-top:8px}
 .barra-inner{height:100%;background:#D4820A;border-radius:3px;transition:width .3s}
 .filtros{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .salvo-tag{font-size:11px;color:#3B6D11;background:#EAF3DE;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:12px}
+.wpp-preview{background:#e9fbe9;border:1px solid #25D366;border-radius:12px;padding:14px;margin-top:10px;font-size:13px;color:#1a1a18;line-height:1.6;white-space:pre-wrap;font-family:inherit}
+.wpp-preview-titulo{font-size:12px;font-weight:600;color:#1da851;margin-bottom:8px}
 
-/* ESTILOS DO PDF — invisível na tela, visível na impressão */
-@media print {
-  body * { visibility: hidden; }
-  #pdf-content, #pdf-content * { visibility: visible; }
-  #pdf-content { position: absolute; left: 0; top: 0; width: 100%; }
-  .no-print { display: none !important; }
-}
-#pdf-content { display: none; }
-#pdf-content.imprimindo { display: block; }
-
-.pdf-header{display:flex;align-items:center;gap:16px;padding:20px 24px;background:#1a1a18;color:#fff;border-radius:8px 8px 0 0;margin-bottom:0}
-.pdf-logo{width:52px;height:52px;object-fit:contain;background:#000;border-radius:6px;padding:2px}
+@media print{body *{visibility:hidden}#pdf-content,#pdf-content *{visibility:visible}#pdf-content{position:absolute;left:0;top:0;width:100%}.no-print{display:none!important}}
+#pdf-content{display:none}
+#pdf-content.imprimindo{display:block}
+.pdf-header{display:flex;align-items:center;gap:16px;padding:20px 24px;background:#1a1a18;color:#fff;border-radius:8px 8px 0 0}
 .pdf-titulo{font-size:18px;font-weight:700;color:#fff}
 .pdf-subtitulo{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
 .pdf-body{padding:24px;background:#fff;border:1px solid #e0ded6;border-top:none;border-radius:0 0 8px 8px}
@@ -103,62 +101,45 @@ tr.atrasado td{background:#FAECE7;color:#993C1D}
   </div>
   <div class="header-right">
     <div class="header-date" id="data-hoje"></div>
-    <button class="btn-pdf no-print" onclick="gerarPDF()">📄 Gerar relatório PDF</button>
+    <button class="btn-wpp-auto no-print" onclick="abrirModalWpp()">📲 Cobrar atrasados</button>
+    <button class="btn-pdf no-print" onclick="gerarPDF()">📄 Relatório PDF</button>
   </div>
 </div>
 
-<!-- CONTEÚDO DO PDF (invisível na tela) -->
+<!-- PDF -->
 <div id="pdf-content">
-  <div class="pdf-header">
-    <div>
-      <div class="pdf-titulo">Gama Industrial</div>
-      <div class="pdf-subtitulo">Usinas de Asfalto · Manaus, AM · Relatório operacional diário</div>
-    </div>
-  </div>
+  <div class="pdf-header"><div><div class="pdf-titulo">Gama Industrial</div><div class="pdf-subtitulo">Usinas de Asfalto · Manaus, AM · Relatório operacional diário</div></div></div>
   <div class="pdf-body">
     <div id="pdf-data" style="font-size:12px;color:#888780;margin-bottom:20px"></div>
     <div class="pdf-resumo" id="pdf-resumo"></div>
-    <div class="pdf-secao">
-      <div class="pdf-secao-titulo">Checklist do dia</div>
-      <table id="pdf-tabela-itens">
-        <thead><tr><th>Tarefa</th><th>Setor</th><th>Responsável</th><th>Prioridade</th><th>Status</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="pdf-secao">
-      <div class="pdf-secao-titulo">Materiais e compras</div>
-      <table id="pdf-tabela-mats">
-        <thead><tr><th>Material</th><th>Quantidade</th><th>Responsável</th><th>Status</th><th>Observação</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <div class="pdf-secao"><div class="pdf-secao-titulo">Checklist do dia</div><table id="pdf-tabela-itens"><thead><tr><th>Tarefa</th><th>Setor</th><th>Responsável</th><th>Prioridade</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    <div class="pdf-secao"><div class="pdf-secao-titulo">Materiais e compras</div><table id="pdf-tabela-mats"><thead><tr><th>Material</th><th>Quantidade</th><th>Responsável</th><th>Status</th><th>Observação</th></tr></thead><tbody></tbody></table></div>
     <div class="pdf-rodape" id="pdf-rodape"></div>
   </div>
 </div>
 
-<div class="container">
+<!-- Modal WhatsApp automático -->
+<div id="modal-wpp" style="display:none">
+  <div class="modal-bg" onclick="fecharModalWpp()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h2>📲 Cobrar atrasados via WhatsApp</h2>
+      <div id="wpp-lista"></div>
+      <div style="margin-top:16px;text-align:right">
+        <button class="btn" onclick="fecharModalWpp()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="container">
   <div id="salvo-tag" class="salvo-tag" style="display:none">✅ Dados salvos automaticamente</div>
   <div id="alerta-banner" style="display:none"></div>
 
   <div class="resumo-cards">
-    <div class="resumo-card">
-      <div class="num" id="r-total">0/0</div>
-      <div class="label">Tarefas hoje</div>
-      <div class="barra-prog"><div class="barra-inner" id="r-barra" style="width:0%"></div></div>
-    </div>
-    <div class="resumo-card" id="card-alerta">
-      <div class="num" id="r-alerta">0</div>
-      <div class="label">🚨 Em atraso</div>
-    </div>
-    <div class="resumo-card">
-      <div class="num" id="r-func" style="color:#3B6D11">0</div>
-      <div class="label">Funcionários ativos</div>
-    </div>
-    <div class="resumo-card">
-      <div class="num" id="r-mat" style="color:#993C1D">0</div>
-      <div class="label">Materiais a comprar</div>
-    </div>
+    <div class="resumo-card"><div class="num" id="r-total">0/0</div><div class="label">Tarefas hoje</div><div class="barra-prog"><div class="barra-inner" id="r-barra" style="width:0%"></div></div></div>
+    <div class="resumo-card" id="card-alerta"><div class="num" id="r-alerta">0</div><div class="label">🚨 Em atraso</div></div>
+    <div class="resumo-card"><div class="num" id="r-func" style="color:#3B6D11">0</div><div class="label">Funcionários ativos</div></div>
+    <div class="resumo-card"><div class="num" id="r-mat" style="color:#993C1D">0</div><div class="label">Materiais a comprar</div></div>
   </div>
 
   <div class="tabs">
@@ -217,7 +198,6 @@ tr.atrasado td{background:#FAECE7;color:#993C1D}
     </div>
     <div id="lista-funcionarios"></div>
   </div>
-
 </div>
 
 <div id="modal" style="display:none">
@@ -299,61 +279,90 @@ let niId=ids.niId,nmId=ids.nmId,nfId=ids.nfId;
 let filtro='todos',aba='checklist',editId=null;
 
 const dataHoje=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-document.getElementById('data-hoje').textContent=dataHoje;
+document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
 
 function isAtrasado(i){return !i.feito&&i.prior==='alta'&&i.diasAtraso>0;}
 function gF(id){return funcs.find(f=>f.id===id)||funcs[funcs.length-1]||{nome:'—',tel:'',id:0};}
 function aL(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();}
 function aC(id){return AC[(id-1)%AC.length];}
 function aT(id){return AT[(id-1)%AT.length];}
-function wpp(tel){window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');}
+
+function wppMsg(tel,msg){
+  const num=tel.replace(/\D/g,'');
+  window.open('https://wa.me/55'+num+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+function wppSimples(tel){
+  window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');
+}
+
+function montarMensagem(func,tarefasAtrasadas){
+  const lista=tarefasAtrasadas.map(t=>`• ${t.nome} (${t.diasAtraso} dia${t.diasAtraso>1?'s':''} em atraso)`).join('\n');
+  return `Olá, ${func.nome.split(' ')[0]}! 👋\n\nA *Gama Industrial* identificou tarefas em atraso sob sua responsabilidade:\n\n${lista}\n\nPor favor, providencie a execução o mais rápido possível.\n\nObrigado! ✅\n_Gama Industrial — Usinas de Asfalto_`;
+}
+
+function abrirModalWpp(){
+  const atrasados=itens.filter(i=>isAtrasado(i));
+  const modal=document.getElementById('modal-wpp');
+  const lista=document.getElementById('wpp-lista');
+
+  if(atrasados.length===0){
+    lista.innerHTML='<div style="text-align:center;padding:20px;color:#3B6D11;font-size:13px">✅ Nenhuma tarefa em atraso no momento!</div>';
+    modal.style.display='block';
+    return;
+  }
+
+  // Agrupar por responsável
+  const porResp={};
+  atrasados.forEach(i=>{
+    if(!porResp[i.respId])porResp[i.respId]=[];
+    porResp[i.respId].push(i);
+  });
+
+  lista.innerHTML=Object.keys(porResp).map(respId=>{
+    const r=gF(parseInt(respId));
+    const tarefas=porResp[respId];
+    const msg=montarMensagem(r,tarefas);
+    return `<div style="background:#f4f4f0;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="avatar" style="width:32px;height:32px;font-size:12px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
+          <div>
+            <div style="font-size:13px;font-weight:600">${r.nome}</div>
+            <div style="font-size:11px;color:#888780">${tarefas.length} tarefa${tarefas.length>1?'s':''} em atraso</div>
+          </div>
+        </div>
+        <button class="btn-wpp-alerta" onclick="wppMsg('${r.tel}',\`${msg.replace(/`/g,"'")}\`)">📲 Enviar cobrança</button>
+      </div>
+      <div class="wpp-preview-titulo">Prévia da mensagem:</div>
+      <div class="wpp-preview">${msg}</div>
+    </div>`;
+  }).join('');
+
+  modal.style.display='block';
+}
+
+function fecharModalWpp(){document.getElementById('modal-wpp').style.display='none';}
 
 function gerarPDF(){
   const feitos=itens.filter(i=>i.feito).length;
   const atrasados=itens.filter(i=>isAtrasado(i));
-  const pendMats=mats.filter(m=>m.status==='pendente').length;
-
   document.getElementById('pdf-data').textContent='Data: '+dataHoje;
-
   document.getElementById('pdf-resumo').innerHTML=`
     <div class="pdf-resumo-card"><div class="n">${feitos}/${itens.length}</div><div class="l">Tarefas concluídas</div></div>
     <div class="pdf-resumo-card" style="${atrasados.length>0?'background:#FAECE7;border-color:#F0997B':''}"><div class="n" style="${atrasados.length>0?'color:#993C1D':''}">${atrasados.length}</div><div class="l" style="${atrasados.length>0?'color:#993C1D':''}">Em atraso</div></div>
     <div class="pdf-resumo-card"><div class="n" style="color:#3B6D11">${funcs.filter(f=>f.status==='ativo').length}</div><div class="l">Funcionários ativos</div></div>
-    <div class="pdf-resumo-card"><div class="n" style="color:#993C1D">${pendMats}</div><div class="l">Materiais a comprar</div></div>
-  `;
-
-  const tbodyItens=document.querySelector('#pdf-tabela-itens tbody');
-  tbodyItens.innerHTML=itens.map(item=>{
-    const r=gF(item.respId);
-    const atras=isAtrasado(item);
-    const statusTxt=item.feito?'✅ Concluído':atras?`🚨 ${item.diasAtraso}d atraso`:'⏳ Pendente';
-    return `<tr class="${item.feito?'feito':''} ${atras?'atrasado':''}">
-      <td>${item.nome}</td>
-      <td>${item.cat}</td>
-      <td>${r.nome}</td>
-      <td><span class="pdf-badge" style="background:${CP[item.prior].bg};color:${CP[item.prior].c}">${CP[item.prior].l}</span></td>
-      <td>${statusTxt}</td>
-    </tr>`;
+    <div class="pdf-resumo-card"><div class="n" style="color:#993C1D">${mats.filter(m=>m.status==='pendente').length}</div><div class="l">Materiais a comprar</div></div>`;
+  document.querySelector('#pdf-tabela-itens tbody').innerHTML=itens.map(item=>{
+    const r=gF(item.respId);const atras=isAtrasado(item);
+    return `<tr class="${item.feito?'feito':''} ${atras?'atrasado':''}"><td>${item.nome}</td><td>${item.cat}</td><td>${r.nome}</td><td><span class="pdf-badge" style="background:${CP[item.prior].bg};color:${CP[item.prior].c}">${CP[item.prior].l}</span></td><td>${item.feito?'✅ Concluído':atras?`🚨 ${item.diasAtraso}d atraso`:'⏳ Pendente'}</td></tr>`;
   }).join('');
-
-  const tbodyMats=document.querySelector('#pdf-tabela-mats tbody');
-  tbodyMats.innerHTML=mats.map(m=>{
+  document.querySelector('#pdf-tabela-mats tbody').innerHTML=mats.map(m=>{
     const r=gF(m.respId);
-    return `<tr>
-      <td>${m.nome}</td>
-      <td>${m.qtd}</td>
-      <td>${r.nome}</td>
-      <td><span class="pdf-badge" style="background:${CS[m.status].bg};color:${CS[m.status].c}">${CS[m.status].l}</span></td>
-      <td>${m.obs||'—'}</td>
-    </tr>`;
+    return `<tr><td>${m.nome}</td><td>${m.qtd}</td><td>${r.nome}</td><td><span class="pdf-badge" style="background:${CS[m.status].bg};color:${CS[m.status].c}">${CS[m.status].l}</span></td><td>${m.obs||'—'}</td></tr>`;
   }).join('');
-
   document.getElementById('pdf-rodape').textContent='Gerado em '+dataHoje+' · Gama Industrial — Usinas de Asfalto · Manaus, AM';
-
-  const el=document.getElementById('pdf-content');
-  el.classList.add('imprimindo');
-  window.print();
-  setTimeout(()=>el.classList.remove('imprimindo'),1000);
+  const el=document.getElementById('pdf-content');el.classList.add('imprimindo');window.print();setTimeout(()=>el.classList.remove('imprimindo'),1000);
 }
 
 function atualizarResumo(){
@@ -368,7 +377,7 @@ function atualizarResumo(){
   const banner=document.getElementById('alerta-banner');
   if(atrasados.length>0){
     banner.style.display='block';
-    banner.innerHTML=`<div class="alerta-banner"><div style="font-size:20px;flex-shrink:0">🚨</div><div><div style="font-size:13px;font-weight:600;color:#993C1D;margin-bottom:4px">${atrasados.length} tarefa${atrasados.length>1?'s':''} com atraso</div>${atrasados.map(i=>`<div style="font-size:12px;color:#712B13">• ${i.nome} (${i.diasAtraso} dia${i.diasAtraso>1?'s':''})</div>`).join('')}</div></div>`;
+    banner.innerHTML=`<div class="alerta-banner"><div style="display:flex;align-items:flex-start;gap:10px"><div style="font-size:20px">🚨</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#993C1D;margin-bottom:6px">${atrasados.length} tarefa${atrasados.length>1?'s':''} com atraso</div>${atrasados.map(i=>`<div style="font-size:12px;color:#712B13;margin-bottom:2px">• ${i.nome} (${i.diasAtraso} dia${i.diasAtraso>1?'s':''})</div>`).join('')}</div><button class="btn-wpp-alerta" onclick="abrirModalWpp()" style="flex-shrink:0">📲 Cobrar agora</button></div></div>`;
   } else { banner.style.display='none'; }
   const tabCheck=document.getElementById('tab-checklist');
   if(atrasados.length>0){tabCheck.classList.add('tem-alerta');tabCheck.textContent='🚨 Checklist ('+atrasados.length+')';}
@@ -381,12 +390,8 @@ function popularSelects(){
 }
 
 function mudarAba(a,btn){
-  aba=a;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));
-  btn.classList.add('ativo');
-  document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativo'));
-  document.getElementById('aba-'+a).classList.add('ativo');
-  renderizar();
+  aba=a;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));btn.classList.add('ativo');
+  document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativo'));document.getElementById('aba-'+a).classList.add('ativo');renderizar();
 }
 
 function filtrar(f){
@@ -396,8 +401,7 @@ function filtrar(f){
     const isA=x==='atrasado';
     if(x===f){b.style.background=isA?'#993C1D':'#1a1a18';b.style.color='#fff';b.style.borderColor=isA?'#993C1D':'#1a1a18';}
     else{b.style.background='transparent';b.style.color=isA?'#993C1D':'';b.style.borderColor=isA?'#993C1D':'';}
-  });
-  renderChecklist();
+  });renderChecklist();
 }
 
 function renderChecklist(){
@@ -412,6 +416,7 @@ function renderChecklist(){
       <div class="cat-label">${cat.toUpperCase()}</div>
       ${g[cat].map(item=>{
         const r=gF(item.respId);const em=(CI[item.cat]||CI['Outros'])[item.ii||0];const atras=isAtrasado(item);
+        const msg=atras?montarMensagem(r,[item]):'';
         return `<div class="card ${item.feito?'feito':''} ${atras?'atrasado':''}">
           <div style="display:flex;align-items:flex-start;gap:10px">
             <input type="checkbox" ${item.feito?'checked':''} onchange="toggleItem(${item.id})" style="width:18px;height:18px;cursor:pointer;margin-top:3px;flex-shrink:0"/>
@@ -424,7 +429,7 @@ function renderChecklist(){
                   <div class="avatar" style="width:22px;height:22px;font-size:10px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
                   <span style="font-size:12px;color:#888780">${r.nome}</span>
                 </div>
-                ${!item.feito?`<button class="btn btn-wpp" onclick="wpp('${r.tel}')" style="padding:3px 10px;font-size:11px">📲 WhatsApp</button>`:''}
+                ${atras?`<button class="btn-wpp-alerta" onclick="wppMsg('${r.tel}',\`${msg.replace(/`/g,"'")}\`)">📲 Cobrar</button>`:`<button class="btn-wpp-item" onclick="wppSimples('${r.tel}')">📲 WhatsApp</button>`}
               </div>
             </div>
             <button onclick="removerItem(${item.id})" style="background:none;border:none;color:#aaa;cursor:pointer;font-size:18px;padding:0">×</button>
@@ -449,7 +454,7 @@ function renderMateriais(){
             <div class="avatar" style="width:22px;height:22px;font-size:10px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
             <span style="font-size:12px;color:#888780">${r.nome}</span>
           </div>
-          <button class="btn btn-wpp" onclick="wpp('${r.tel}')" style="padding:3px 10px;font-size:11px">📲 WhatsApp</button>
+          <button class="btn-wpp-item" onclick="wppSimples('${r.tel}')">📲 WhatsApp</button>
           <select onchange="mudarStatus(${m.id},this.value)" style="font-size:11px;padding:4px 6px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;cursor:pointer">
             <option value="pendente" ${m.status==='pendente'?'selected':''}>A comprar</option>
             <option value="pedido" ${m.status==='pedido'?'selected':''}>Pedido feito</option>
@@ -469,8 +474,7 @@ function renderFuncionarios(){
     <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
       ${[['Total',funcs.length,'#1a1a18'],['Ativos',at,'#3B6D11'],['Férias',funcs.filter(f=>f.status==='ferias').length,'#854F0B'],['Afastados',funcs.filter(f=>f.status==='afastado').length,'#993C1D']].map(([l,n,c])=>`
       <div style="flex:1;min-width:80px;background:#fff;border:1px solid #e0ded6;border-radius:10px;padding:12px;text-align:center">
-        <div style="font-size:22px;font-weight:600;color:${c}">${n}</div>
-        <div style="font-size:11px;color:#888780">${l}</div>
+        <div style="font-size:22px;font-weight:600;color:${c}">${n}</div><div style="font-size:11px;color:#888780">${l}</div>
       </div>`).join('')}
     </div>
     ${funcs.map(f=>`<div class="card"><div style="display:flex;align-items:center;gap:12px">
@@ -484,7 +488,7 @@ function renderFuncionarios(){
         <div style="font-size:12px;color:#888780;margin-top:2px">📞 ${f.tel}${f.email?' · ✉️ '+f.email:''}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-        <button class="btn btn-wpp" onclick="wpp('${f.tel}')" style="padding:5px 12px;font-size:12px">📲 WhatsApp</button>
+        <button class="btn-wpp-item" onclick="wppSimples('${f.tel}')" style="padding:5px 12px;font-size:12px">📲 WhatsApp</button>
         <button class="btn" onclick="editarFunc(${f.id})" style="padding:5px 12px;font-size:12px">✏️ Editar</button>
       </div>
     </div></div>`).join('')}`;
