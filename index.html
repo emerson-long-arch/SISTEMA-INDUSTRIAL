@@ -7,12 +7,15 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f0;color:#1a1a18;min-height:100vh}
-.header{background:#1a1a18;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.header{background:#1a1a18;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo-img{width:48px;height:48px;object-fit:contain;border-radius:6px;background:#000;padding:2px}
 .header h1{font-size:16px;font-weight:700;letter-spacing:.5px}
 .header p{font-size:11px;opacity:.5;margin-top:2px}
-.header-right{font-size:12px;opacity:.5;text-align:right;line-height:1.6}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.header-date{font-size:12px;opacity:.5;text-align:right}
+.btn-pdf{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid #D4820A;background:#D4820A;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-pdf:hover{background:#b36c08}
 .container{max-width:800px;margin:0 auto;padding:24px 16px}
 .resumo-cards{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
 .resumo-card{flex:1;min-width:100px;background:#fff;border-radius:12px;padding:14px;border:1px solid #e0ded6;text-align:center}
@@ -21,11 +24,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .resumo-card.alerta{background:#FAECE7;border-color:#F0997B}
 .resumo-card.alerta .num{color:#993C1D}
 .resumo-card.alerta .label{color:#993C1D}
-.alerta-banner{background:#FAECE7;border:1px solid #F0997B;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px}
-.alerta-banner .icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alerta-banner .texto{flex:1}
-.alerta-banner .titulo{font-size:13px;font-weight:600;color:#993C1D;margin-bottom:4px}
-.alerta-banner .item{font-size:12px;color:#712B13;margin-bottom:2px}
+.alerta-banner{background:#FAECE7;border:1px solid #F0997B;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;width:100%}
 .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .tab{padding:8px 18px;border-radius:20px;border:1px solid #d3d1c7;background:transparent;color:#5f5e5a;font-size:13px;cursor:pointer;transition:all .2s}
 .tab.ativo{background:#1a1a18;color:#fff;border-color:#1a1a18}
@@ -61,6 +60,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .barra-inner{height:100%;background:#D4820A;border-radius:3px;transition:width .3s}
 .filtros{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .salvo-tag{font-size:11px;color:#3B6D11;background:#EAF3DE;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:12px}
+
+/* ESTILOS DO PDF — invisível na tela, visível na impressão */
+@media print {
+  body * { visibility: hidden; }
+  #pdf-content, #pdf-content * { visibility: visible; }
+  #pdf-content { position: absolute; left: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
+}
+#pdf-content { display: none; }
+#pdf-content.imprimindo { display: block; }
+
+.pdf-header{display:flex;align-items:center;gap:16px;padding:20px 24px;background:#1a1a18;color:#fff;border-radius:8px 8px 0 0;margin-bottom:0}
+.pdf-logo{width:52px;height:52px;object-fit:contain;background:#000;border-radius:6px;padding:2px}
+.pdf-titulo{font-size:18px;font-weight:700;color:#fff}
+.pdf-subtitulo{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+.pdf-body{padding:24px;background:#fff;border:1px solid #e0ded6;border-top:none;border-radius:0 0 8px 8px}
+.pdf-secao{margin-bottom:24px}
+.pdf-secao-titulo{font-size:13px;font-weight:700;color:#1a1a18;border-bottom:2px solid #D4820A;padding-bottom:6px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.pdf-resumo{display:flex;gap:12px;margin-bottom:24px}
+.pdf-resumo-card{flex:1;padding:12px;border:1px solid #e0ded6;border-radius:8px;text-align:center}
+.pdf-resumo-card .n{font-size:22px;font-weight:700;color:#1a1a18}
+.pdf-resumo-card .l{font-size:11px;color:#888780;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f4f4f0;padding:8px 10px;text-align:left;font-weight:600;color:#1a1a18;border:1px solid #e0ded6}
+td{padding:8px 10px;border:1px solid #e0ded6;color:#1a1a18;vertical-align:middle}
+tr.feito td{color:#888780;text-decoration:line-through}
+tr.atrasado td{background:#FAECE7;color:#993C1D}
+.pdf-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;display:inline-block}
+.pdf-rodape{text-align:center;font-size:11px;color:#888780;margin-top:20px;padding-top:12px;border-top:1px solid #e0ded6}
 </style>
 </head>
 <body>
@@ -73,7 +101,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <p>Usinas de Asfalto · Manaus, AM</p>
     </div>
   </div>
-  <div class="header-right" id="data-hoje"></div>
+  <div class="header-right">
+    <div class="header-date" id="data-hoje"></div>
+    <button class="btn-pdf no-print" onclick="gerarPDF()">📄 Gerar relatório PDF</button>
+  </div>
+</div>
+
+<!-- CONTEÚDO DO PDF (invisível na tela) -->
+<div id="pdf-content">
+  <div class="pdf-header">
+    <div>
+      <div class="pdf-titulo">Gama Industrial</div>
+      <div class="pdf-subtitulo">Usinas de Asfalto · Manaus, AM · Relatório operacional diário</div>
+    </div>
+  </div>
+  <div class="pdf-body">
+    <div id="pdf-data" style="font-size:12px;color:#888780;margin-bottom:20px"></div>
+    <div class="pdf-resumo" id="pdf-resumo"></div>
+    <div class="pdf-secao">
+      <div class="pdf-secao-titulo">Checklist do dia</div>
+      <table id="pdf-tabela-itens">
+        <thead><tr><th>Tarefa</th><th>Setor</th><th>Responsável</th><th>Prioridade</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="pdf-secao">
+      <div class="pdf-secao-titulo">Materiais e compras</div>
+      <table id="pdf-tabela-mats">
+        <thead><tr><th>Material</th><th>Quantidade</th><th>Responsável</th><th>Status</th><th>Observação</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="pdf-rodape" id="pdf-rodape"></div>
+  </div>
 </div>
 
 <div class="container">
@@ -193,11 +253,11 @@ const AT=['#3C3489','#085041','#712B13','#854F0B','#0C447C','#27500A','#72243E']
 
 const DEFAULTS={
   funcs:[
-    {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo',diasSemFechar:2},
-    {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo',diasSemFechar:0},
-    {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo',diasSemFechar:0},
-    {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo',diasSemFechar:0},
-    {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo',diasSemFechar:0},
+    {id:1,nome:'Carlos Mendonça',cargo:'Técnico de manutenção',setor:'Máquinas',tel:'92 99201-3344',email:'',turno:'Manhã',status:'ativo'},
+    {id:2,nome:'Ana Ferreira',cargo:'Operadora de usina',setor:'Usina',tel:'92 98134-2211',email:'',turno:'Tarde',status:'ativo'},
+    {id:3,nome:'Roberto Lima',cargo:'Inspetor de segurança',setor:'Segurança',tel:'92 99345-6677',email:'',turno:'Integral',status:'ativo'},
+    {id:4,nome:'Joana Souza',cargo:'Auxiliar de limpeza',setor:'Limpeza',tel:'92 98765-1100',email:'',turno:'Manhã',status:'ativo'},
+    {id:5,nome:'Marcos Teixeira',cargo:'Supervisor geral',setor:'Geral',tel:'92 99001-4455',email:'',turno:'Integral',status:'ativo'},
   ],
   itens:[
     {id:1,nome:'Verificar temperatura da usina de asfalto',cat:'Usina',prior:'alta',feito:false,respId:2,ii:1,diasAtraso:0},
@@ -217,10 +277,7 @@ const DEFAULTS={
   ]
 };
 
-function carregar(chave,padrao){
-  try{const s=localStorage.getItem('gama_'+chave);return s?JSON.parse(s):JSON.parse(JSON.stringify(padrao));}
-  catch(e){return JSON.parse(JSON.stringify(padrao));}
-}
+function carregar(k,p){try{const s=localStorage.getItem('gama_'+k);return s?JSON.parse(s):JSON.parse(JSON.stringify(p));}catch(e){return JSON.parse(JSON.stringify(p));}}
 function salvar(){
   try{
     localStorage.setItem('gama_funcs',JSON.stringify(funcs));
@@ -241,14 +298,63 @@ const ids=carregar('ids',{niId:10,nmId:6,nfId:6});
 let niId=ids.niId,nmId=ids.nmId,nfId=ids.nfId;
 let filtro='todos',aba='checklist',editId=null;
 
-document.getElementById('data-hoje').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+const dataHoje=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+document.getElementById('data-hoje').textContent=dataHoje;
 
-function isAtrasado(item){return !item.feito && item.prior==='alta' && item.diasAtraso>0;}
+function isAtrasado(i){return !i.feito&&i.prior==='alta'&&i.diasAtraso>0;}
 function gF(id){return funcs.find(f=>f.id===id)||funcs[funcs.length-1]||{nome:'—',tel:'',id:0};}
 function aL(n){return n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();}
 function aC(id){return AC[(id-1)%AC.length];}
 function aT(id){return AT[(id-1)%AT.length];}
 function wpp(tel){window.open('https://wa.me/55'+tel.replace(/\D/g,''),'_blank');}
+
+function gerarPDF(){
+  const feitos=itens.filter(i=>i.feito).length;
+  const atrasados=itens.filter(i=>isAtrasado(i));
+  const pendMats=mats.filter(m=>m.status==='pendente').length;
+
+  document.getElementById('pdf-data').textContent='Data: '+dataHoje;
+
+  document.getElementById('pdf-resumo').innerHTML=`
+    <div class="pdf-resumo-card"><div class="n">${feitos}/${itens.length}</div><div class="l">Tarefas concluídas</div></div>
+    <div class="pdf-resumo-card" style="${atrasados.length>0?'background:#FAECE7;border-color:#F0997B':''}"><div class="n" style="${atrasados.length>0?'color:#993C1D':''}">${atrasados.length}</div><div class="l" style="${atrasados.length>0?'color:#993C1D':''}">Em atraso</div></div>
+    <div class="pdf-resumo-card"><div class="n" style="color:#3B6D11">${funcs.filter(f=>f.status==='ativo').length}</div><div class="l">Funcionários ativos</div></div>
+    <div class="pdf-resumo-card"><div class="n" style="color:#993C1D">${pendMats}</div><div class="l">Materiais a comprar</div></div>
+  `;
+
+  const tbodyItens=document.querySelector('#pdf-tabela-itens tbody');
+  tbodyItens.innerHTML=itens.map(item=>{
+    const r=gF(item.respId);
+    const atras=isAtrasado(item);
+    const statusTxt=item.feito?'✅ Concluído':atras?`🚨 ${item.diasAtraso}d atraso`:'⏳ Pendente';
+    return `<tr class="${item.feito?'feito':''} ${atras?'atrasado':''}">
+      <td>${item.nome}</td>
+      <td>${item.cat}</td>
+      <td>${r.nome}</td>
+      <td><span class="pdf-badge" style="background:${CP[item.prior].bg};color:${CP[item.prior].c}">${CP[item.prior].l}</span></td>
+      <td>${statusTxt}</td>
+    </tr>`;
+  }).join('');
+
+  const tbodyMats=document.querySelector('#pdf-tabela-mats tbody');
+  tbodyMats.innerHTML=mats.map(m=>{
+    const r=gF(m.respId);
+    return `<tr>
+      <td>${m.nome}</td>
+      <td>${m.qtd}</td>
+      <td>${r.nome}</td>
+      <td><span class="pdf-badge" style="background:${CS[m.status].bg};color:${CS[m.status].c}">${CS[m.status].l}</span></td>
+      <td>${m.obs||'—'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('pdf-rodape').textContent='Gerado em '+dataHoje+' · Gama Industrial — Usinas de Asfalto · Manaus, AM';
+
+  const el=document.getElementById('pdf-content');
+  el.classList.add('imprimindo');
+  window.print();
+  setTimeout(()=>el.classList.remove('imprimindo'),1000);
+}
 
 function atualizarResumo(){
   const f=itens.filter(i=>i.feito).length,t=itens.length;
@@ -256,50 +362,27 @@ function atualizarResumo(){
   document.getElementById('r-total').textContent=f+'/'+t;
   document.getElementById('r-barra').style.width=(t?Math.round(f/t*100):0)+'%';
   document.getElementById('r-alerta').textContent=atrasados.length;
-  const cardAlerta=document.getElementById('card-alerta');
-  cardAlerta.classList.toggle('alerta',atrasados.length>0);
+  document.getElementById('card-alerta').classList.toggle('alerta',atrasados.length>0);
   document.getElementById('r-func').textContent=funcs.filter(f=>f.status==='ativo').length;
   document.getElementById('r-mat').textContent=mats.filter(m=>m.status==='pendente').length;
-
-  // Banner de alertas
   const banner=document.getElementById('alerta-banner');
   if(atrasados.length>0){
-    banner.style.display='flex';
-    banner.innerHTML=`<div class="alerta-banner" style="width:100%">
-      <div class="icon">🚨</div>
-      <div class="texto">
-        <div class="titulo">${atrasados.length} tarefa${atrasados.length>1?'s':''} com atraso — ação necessária</div>
-        ${atrasados.map(i=>`<div class="item">• ${i.nome} <span style="font-weight:600">(${i.diasAtraso} dia${i.diasAtraso>1?'s':''})</span></div>`).join('')}
-      </div>
-    </div>`;
-  } else {
-    banner.style.display='none';
-  }
-
-  // Tab com alerta
+    banner.style.display='block';
+    banner.innerHTML=`<div class="alerta-banner"><div style="font-size:20px;flex-shrink:0">🚨</div><div><div style="font-size:13px;font-weight:600;color:#993C1D;margin-bottom:4px">${atrasados.length} tarefa${atrasados.length>1?'s':''} com atraso</div>${atrasados.map(i=>`<div style="font-size:12px;color:#712B13">• ${i.nome} (${i.diasAtraso} dia${i.diasAtraso>1?'s':''})</div>`).join('')}</div></div>`;
+  } else { banner.style.display='none'; }
   const tabCheck=document.getElementById('tab-checklist');
-  if(atrasados.length>0){
-    tabCheck.classList.add('tem-alerta');
-    tabCheck.textContent='🚨 Checklist ('+atrasados.length+')';
-  } else {
-    tabCheck.classList.remove('tem-alerta');
-    tabCheck.textContent='✅ Checklist';
-  }
+  if(atrasados.length>0){tabCheck.classList.add('tem-alerta');tabCheck.textContent='🚨 Checklist ('+atrasados.length+')';}
+  else{tabCheck.classList.remove('tem-alerta');tabCheck.textContent='✅ Checklist';}
 }
 
 function popularSelects(){
   const ativos=funcs.filter(f=>f.status==='ativo');
-  ['novo-resp','mat-resp'].forEach(id=>{
-    const s=document.getElementById(id);
-    if(s)s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');
-  });
+  ['novo-resp','mat-resp'].forEach(id=>{const s=document.getElementById(id);if(s)s.innerHTML=ativos.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('');});
 }
 
 function mudarAba(a,btn){
   aba=a;
-  document.querySelectorAll('.tab').forEach(b=>{
-    b.classList.remove('ativo');
-  });
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('ativo'));
   btn.classList.add('ativo');
   document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativo'));
   document.getElementById('aba-'+a).classList.add('ativo');
@@ -309,43 +392,26 @@ function mudarAba(a,btn){
 function filtrar(f){
   filtro=f;
   ['todos','atrasado','pendente','concluido'].forEach(x=>{
-    const b=document.getElementById('f-'+x);
-    if(!b)return;
-    const isAtrasadoBtn=x==='atrasado';
-    if(x===f){
-      b.style.background=isAtrasadoBtn?'#993C1D':'#1a1a18';
-      b.style.color='#fff';
-      b.style.borderColor=isAtrasadoBtn?'#993C1D':'#1a1a18';
-    } else {
-      b.style.background='transparent';
-      b.style.color=isAtrasadoBtn?'#993C1D':'';
-      b.style.borderColor=isAtrasadoBtn?'#993C1D':'';
-    }
+    const b=document.getElementById('f-'+x);if(!b)return;
+    const isA=x==='atrasado';
+    if(x===f){b.style.background=isA?'#993C1D':'#1a1a18';b.style.color='#fff';b.style.borderColor=isA?'#993C1D':'#1a1a18';}
+    else{b.style.background='transparent';b.style.color=isA?'#993C1D':'';b.style.borderColor=isA?'#993C1D':'';}
   });
   renderChecklist();
 }
 
 function renderChecklist(){
   let vis;
-  if(filtro==='atrasado') vis=itens.filter(i=>isAtrasado(i));
-  else if(filtro==='pendente') vis=itens.filter(i=>!i.feito);
-  else if(filtro==='concluido') vis=itens.filter(i=>i.feito);
-  else vis=[...itens].sort((a,b)=>{
-    if(isAtrasado(a)&&!isAtrasado(b))return -1;
-    if(!isAtrasado(a)&&isAtrasado(b))return 1;
-    return 0;
-  });
-
-  const g={};
-  vis.forEach(i=>{if(!g[i.cat])g[i.cat]=[];g[i.cat].push(i);});
-
+  if(filtro==='atrasado')vis=itens.filter(i=>isAtrasado(i));
+  else if(filtro==='pendente')vis=itens.filter(i=>!i.feito);
+  else if(filtro==='concluido')vis=itens.filter(i=>i.feito);
+  else vis=[...itens].sort((a,b)=>(isAtrasado(a)?-1:isAtrasado(b)?1:0));
+  const g={};vis.forEach(i=>{if(!g[i.cat])g[i.cat]=[];g[i.cat].push(i);});
   document.getElementById('lista-checklist').innerHTML=Object.keys(g).map(cat=>`
     <div style="margin-bottom:18px">
       <div class="cat-label">${cat.toUpperCase()}</div>
       ${g[cat].map(item=>{
-        const r=gF(item.respId);
-        const em=(CI[item.cat]||CI['Outros'])[item.ii||0];
-        const atras=isAtrasado(item);
+        const r=gF(item.respId);const em=(CI[item.cat]||CI['Outros'])[item.ii||0];const atras=isAtrasado(item);
         return `<div class="card ${item.feito?'feito':''} ${atras?'atrasado':''}">
           <div style="display:flex;align-items:flex-start;gap:10px">
             <input type="checkbox" ${item.feito?'checked':''} onchange="toggleItem(${item.id})" style="width:18px;height:18px;cursor:pointer;margin-top:3px;flex-shrink:0"/>
@@ -365,40 +431,36 @@ function renderChecklist(){
           </div>
         </div>`;
       }).join('')}
-    </div>`).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum item aqui.</div>';
-  popularSelects();
-  atualizarResumo();
+    </div>`).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum item.</div>';
+  popularSelects();atualizarResumo();
 }
 
 function renderMateriais(){
   document.getElementById('lista-materiais').innerHTML=mats.map(m=>{
     const r=gF(m.respId);
-    return `<div class="card">
-      <div style="display:flex;align-items:flex-start;gap:10px">
-        <div class="emoji-icon">📦</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:500;margin-bottom:4px">${m.nome}</div>
-          <div style="font-size:12px;color:#888780;margin-bottom:6px">Qtd: ${m.qtd}${m.obs?' · '+m.obs:''}</div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span class="badge" style="background:${CS[m.status].bg};color:${CS[m.status].c}">${CS[m.status].l}</span>
-            <div style="display:flex;align-items:center;gap:5px">
-              <div class="avatar" style="width:22px;height:22px;font-size:10px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
-              <span style="font-size:12px;color:#888780">${r.nome}</span>
-            </div>
-            <button class="btn btn-wpp" onclick="wpp('${r.tel}')" style="padding:3px 10px;font-size:11px">📲 WhatsApp</button>
-            <select onchange="mudarStatus(${m.id},this.value)" style="font-size:11px;padding:4px 6px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;cursor:pointer">
-              <option value="pendente" ${m.status==='pendente'?'selected':''}>A comprar</option>
-              <option value="pedido" ${m.status==='pedido'?'selected':''}>Pedido feito</option>
-              <option value="chegou" ${m.status==='chegou'?'selected':''}>Chegou</option>
-            </select>
+    return `<div class="card"><div style="display:flex;align-items:flex-start;gap:10px">
+      <div class="emoji-icon">📦</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px">${m.nome}</div>
+        <div style="font-size:12px;color:#888780;margin-bottom:6px">Qtd: ${m.qtd}${m.obs?' · '+m.obs:''}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="badge" style="background:${CS[m.status].bg};color:${CS[m.status].c}">${CS[m.status].l}</span>
+          <div style="display:flex;align-items:center;gap:5px">
+            <div class="avatar" style="width:22px;height:22px;font-size:10px;background:${aC(r.id)};color:${aT(r.id)}">${aL(r.nome)}</div>
+            <span style="font-size:12px;color:#888780">${r.nome}</span>
           </div>
+          <button class="btn btn-wpp" onclick="wpp('${r.tel}')" style="padding:3px 10px;font-size:11px">📲 WhatsApp</button>
+          <select onchange="mudarStatus(${m.id},this.value)" style="font-size:11px;padding:4px 6px;border-radius:8px;border:1px solid #d3d1c7;background:#fff;cursor:pointer">
+            <option value="pendente" ${m.status==='pendente'?'selected':''}>A comprar</option>
+            <option value="pedido" ${m.status==='pedido'?'selected':''}>Pedido feito</option>
+            <option value="chegou" ${m.status==='chegou'?'selected':''}>Chegou</option>
+          </select>
         </div>
-        <button onclick="removerMat(${m.id})" style="background:none;border:none;color:#aaa;cursor:pointer;font-size:18px;padding:0">×</button>
       </div>
-    </div>`;
+      <button onclick="removerMat(${m.id})" style="background:none;border:none;color:#aaa;cursor:pointer;font-size:18px;padding:0">×</button>
+    </div></div>`;
   }).join('')||'<div style="text-align:center;padding:40px;color:#aaa;font-size:13px">Nenhum material.</div>';
-  popularSelects();
-  atualizarResumo();
+  popularSelects();atualizarResumo();
 }
 
 function renderFuncionarios(){
@@ -411,97 +473,63 @@ function renderFuncionarios(){
         <div style="font-size:11px;color:#888780">${l}</div>
       </div>`).join('')}
     </div>
-    ${funcs.map(f=>`
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="avatar" style="width:46px;height:46px;font-size:15px;background:${aC(f.id)};color:${aT(f.id)}">${aL(f.nome)}</div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">
-            <span style="font-size:14px;font-weight:600">${f.nome}</span>
-            <span class="badge" style="background:${SF[f.status].bg};color:${SF[f.status].c}">${SF[f.status].l}</span>
-          </div>
-          <div style="font-size:12px;color:#888780">${f.cargo} · ${f.setor} · ${f.turno}</div>
-          <div style="font-size:12px;color:#888780;margin-top:2px">📞 ${f.tel}${f.email?' · ✉️ '+f.email:''}</div>
+    ${funcs.map(f=>`<div class="card"><div style="display:flex;align-items:center;gap:12px">
+      <div class="avatar" style="width:46px;height:46px;font-size:15px;background:${aC(f.id)};color:${aT(f.id)}">${aL(f.nome)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">
+          <span style="font-size:14px;font-weight:600">${f.nome}</span>
+          <span class="badge" style="background:${SF[f.status].bg};color:${SF[f.status].c}">${SF[f.status].l}</span>
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-          <button class="btn btn-wpp" onclick="wpp('${f.tel}')" style="padding:5px 12px;font-size:12px">📲 WhatsApp</button>
-          <button class="btn" onclick="editarFunc(${f.id})" style="padding:5px 12px;font-size:12px">✏️ Editar</button>
-        </div>
+        <div style="font-size:12px;color:#888780">${f.cargo} · ${f.setor} · ${f.turno}</div>
+        <div style="font-size:12px;color:#888780;margin-top:2px">📞 ${f.tel}${f.email?' · ✉️ '+f.email:''}</div>
       </div>
-    </div>`).join('')}`;
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+        <button class="btn btn-wpp" onclick="wpp('${f.tel}')" style="padding:5px 12px;font-size:12px">📲 WhatsApp</button>
+        <button class="btn" onclick="editarFunc(${f.id})" style="padding:5px 12px;font-size:12px">✏️ Editar</button>
+      </div>
+    </div></div>`).join('')}`;
   atualizarResumo();
 }
 
 function renderizar(){
-  if(aba==='checklist') renderChecklist();
-  else if(aba==='materiais') renderMateriais();
-  else if(aba==='funcionarios') renderFuncionarios();
+  if(aba==='checklist')renderChecklist();
+  else if(aba==='materiais')renderMateriais();
+  else if(aba==='funcionarios')renderFuncionarios();
 }
 
-function toggleItem(id){
-  const i=itens.find(x=>x.id===id);
-  if(i){i.feito=!i.feito;if(i.feito)i.diasAtraso=0; salvar(); renderizar();}
-}
+function toggleItem(id){const i=itens.find(x=>x.id===id);if(i){i.feito=!i.feito;if(i.feito)i.diasAtraso=0;salvar();renderizar();}}
 function removerItem(id){itens=itens.filter(x=>x.id!==id);salvar();renderizar();}
 function removerMat(id){mats=mats.filter(x=>x.id!==id);salvar();renderizar();}
 function mudarStatus(id,v){const m=mats.find(x=>x.id===id);if(m){m.status=v;salvar();renderizar();}}
-function resetar(){
-  itens.forEach(i=>{
-    if(!i.feito && i.prior==='alta') i.diasAtraso=(i.diasAtraso||0)+1;
-    i.feito=false;
-  });
-  salvar();renderizar();
-}
-function confirmarReset(){
-  if(confirm('Tem certeza? Isso vai apagar TODOS os dados e voltar ao padrão.')){
-    localStorage.clear();location.reload();
-  }
-}
+function resetar(){itens.forEach(i=>{if(!i.feito&&i.prior==='alta')i.diasAtraso=(i.diasAtraso||0)+1;i.feito=false;});salvar();renderizar();}
+function confirmarReset(){if(confirm('Apagar TODOS os dados?')){localStorage.clear();location.reload();}}
+
 function adicionarItem(){
   const n=document.getElementById('novo-nome').value.trim();if(!n)return;
-  const cat=document.getElementById('nova-cat').value;
-  itens.push({id:niId++,nome:n,cat,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0,diasAtraso:0});
-  document.getElementById('novo-nome').value='';
-  salvar();renderizar();
+  itens.push({id:niId++,nome:n,cat:document.getElementById('nova-cat').value,prior:document.getElementById('nova-prior').value,feito:false,respId:parseInt(document.getElementById('novo-resp').value),ii:0,diasAtraso:0});
+  document.getElementById('novo-nome').value='';salvar();renderizar();
 }
 function adicionarMaterial(){
   const n=document.getElementById('mat-nome').value.trim();if(!n)return;
   mats.push({id:nmId++,nome:n,qtd:document.getElementById('mat-qtd').value||'—',status:document.getElementById('mat-status').value,respId:parseInt(document.getElementById('mat-resp').value),obs:document.getElementById('mat-obs').value});
-  document.getElementById('mat-nome').value='';
-  document.getElementById('mat-qtd').value='';
-  document.getElementById('mat-obs').value='';
+  document.getElementById('mat-nome').value='';document.getElementById('mat-qtd').value='';document.getElementById('mat-obs').value='';
   salvar();renderizar();
 }
 function abrirModal(limpar=true){
-  if(limpar){
-    editId=null;
-    document.getElementById('modal-titulo').textContent='Novo funcionário';
-    ['f-nome','f-cargo','f-tel','f-email'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-setor').value='';
-    document.getElementById('f-turno').value='';
-    document.getElementById('f-status').value='ativo';
-  }
+  if(limpar){editId=null;document.getElementById('modal-titulo').textContent='Novo funcionário';['f-nome','f-cargo','f-tel','f-email'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-setor').value='';document.getElementById('f-turno').value='';document.getElementById('f-status').value='ativo';}
   document.getElementById('modal').style.display='block';
 }
 function fecharModal(){document.getElementById('modal').style.display='none';}
 function editarFunc(id){
-  const f=funcs.find(x=>x.id===id);if(!f)return;
-  editId=id;
+  const f=funcs.find(x=>x.id===id);if(!f)return;editId=id;
   document.getElementById('modal-titulo').textContent='Editar funcionário';
-  document.getElementById('f-nome').value=f.nome;
-  document.getElementById('f-cargo').value=f.cargo;
-  document.getElementById('f-setor').value=f.setor;
-  document.getElementById('f-tel').value=f.tel;
-  document.getElementById('f-email').value=f.email||'';
-  document.getElementById('f-turno').value=f.turno;
-  document.getElementById('f-status').value=f.status;
+  document.getElementById('f-nome').value=f.nome;document.getElementById('f-cargo').value=f.cargo;document.getElementById('f-setor').value=f.setor;document.getElementById('f-tel').value=f.tel;document.getElementById('f-email').value=f.email||'';document.getElementById('f-turno').value=f.turno;document.getElementById('f-status').value=f.status;
   abrirModal(false);
 }
 function salvarFuncionario(){
   const n=document.getElementById('f-nome').value.trim();if(!n)return;
   const d={nome:n,cargo:document.getElementById('f-cargo').value,setor:document.getElementById('f-setor').value||'Geral',tel:document.getElementById('f-tel').value,email:document.getElementById('f-email').value,turno:document.getElementById('f-turno').value||'Integral',status:document.getElementById('f-status').value};
-  if(editId){const i=funcs.findIndex(f=>f.id===editId);funcs[i]={...funcs[i],...d};}
-  else{funcs.push({id:nfId++,...d});}
+  if(editId){const i=funcs.findIndex(f=>f.id===editId);funcs[i]={...funcs[i],...d};}else{funcs.push({id:nfId++,...d});}
   fecharModal();salvar();renderizar();
 }
 renderizar();
